@@ -1,15 +1,15 @@
 #' coverage
 #'
 #' @param data 
-#' @param paramter 
+#' @param parameter 
 #' @param lower 
 #' @param upper 
 #'
 #' @return
 #' @export
-coverage <- function(data, paramter, lower, upper, subset = NULL) {
+coverage <- function(data, parameter, lower, upper, subset = NULL) {
   if (is.null(subset)) {
-    out_of_coverage <- data[[paramter]] < data[[lower]] | data[[paramter]] > data[[upper]]
+    out_of_coverage <- data[[parameter]] < data[[lower]] | data[[parameter]] > data[[upper]]
     number_out <- out_of_coverage %>%
       as.numeric() %>%
       sum()
@@ -21,7 +21,7 @@ coverage <- function(data, paramter, lower, upper, subset = NULL) {
     for(i in 1:length(sets)) {
       set <- sets[i]
       tempdata <- data %>% dplyr::filter(!!symsubset == set)
-      out_of_coverage <- tempdata[[paramter]] < tempdata[[lower]] | tempdata[[paramter]] > tempdata[[upper]]
+      out_of_coverage <- tempdata[[parameter]] < tempdata[[lower]] | tempdata[[parameter]] > tempdata[[upper]]
       number_out <- out_of_coverage %>%
         as.numeric() %>%
         sum()

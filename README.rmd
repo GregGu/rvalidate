@@ -5,7 +5,8 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(cetable)
+# library(cetable)
+devtools::load_all()
 ```
 
 
@@ -21,7 +22,10 @@ cetable is a package for calculating errors and coverage. Output is formated to 
 ## <a name="2"></a>
 ## Error tables
 ```{r}
-error_data(exampledata, "pcst", "50%", "totalerror_sd")  %>%
+error_data(data = exampledata, 
+           parameter = "pcst", 
+           estimate = "50%", 
+           totalerror_sd = "totalerror_sd")  %>%
     kableExtra::kable()
 ```
 
@@ -29,12 +33,20 @@ error_data(exampledata, "pcst", "50%", "totalerror_sd")  %>%
 ## Coverage tables
 If provided a subset column name, coverage will be calculate for each subset.
 ```{r}
-coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "agegroup")  %>%
+coverage(data = exampledata, 
+         parameter = "pcst", 
+         lower = "2.5%", 
+         upper = "97.5%", 
+         subset = "agegroup")  %>%
     kableExtra::kable()
 ```
 
 ```{r}
-coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "sourcename")  %>%
+coverage(data = exampledata, 
+         parameter = "pcst", 
+         lower = "2.5%", 
+         upper = "97.5%", 
+         subset = "sourcename")  %>%
     kableExtra::kable()
 
 # t <- coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "sourcename")

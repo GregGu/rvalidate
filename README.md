@@ -20,7 +20,10 @@ format your data before using cetable.
 ## Error tables
 
 ``` r
-error_data(exampledata, "pcst", "50%", "totalerror_sd")  %>%
+error_data(data = exampledata, 
+           parameter = "pcst", 
+           estimate = "50%", 
+           totalerror_sd = "totalerror_sd")  %>%
     kableExtra::kable()
 ```
 
@@ -178,7 +181,11 @@ If provided a subset column name, coverage will be calculate for each
 subset.
 
 ``` r
-coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "agegroup")  %>%
+coverage(data = exampledata, 
+         parameter = "pcst", 
+         lower = "2.5%", 
+         upper = "97.5%", 
+         subset = "agegroup")  %>%
     kableExtra::kable()
 ```
 
@@ -321,7 +328,11 @@ coverage
 </table>
 
 ``` r
-coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "sourcename")  %>%
+coverage(data = exampledata, 
+         parameter = "pcst", 
+         lower = "2.5%", 
+         upper = "97.5%", 
+         subset = "sourcename")  %>%
     kableExtra::kable()
 ```
 
