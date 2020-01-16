@@ -1,0 +1,27 @@
+---
+title: "testing"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(cetable)
+devtools::load_all()
+exampledata <- cetable::exampledata
+```
+
+```{r}
+# error_data(exampledata, "pcst", "50%", "totalerror_sd")  %>%
+#     kableExtra::kable() %>%
+#     kableExtra::kable_styling()
+
+error_data(exampledata, "pcst", "50%", "totalerror_sd")  %>%
+    gridExtra::gtable()
+
+```
+
+```{r}
+coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "agegroup")  %>%
+    kableExtra::kable() %>%
+    kableExtra::kable_styling()
+```

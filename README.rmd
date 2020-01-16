@@ -1,0 +1,41 @@
+---
+title: "cetable"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(cetable)
+```
+
+
+## Table of Contents
+1. [Introduction](#intro)
+2. [Error tables](#2)
+3. [Coverage tables](#3)
+  
+## <a name="intro"></a>
+## Introduction
+cetable is a package for calculating errors and coverage. Output is formated to produce tables. Use cetable::exampledata as a guide to format your data before using cetable.
+
+## <a name="2"></a>
+## Error tables
+```{r}
+error_data(exampledata, "pcst", "50%", "totalerror_sd")  %>%
+    kableExtra::kable()
+```
+
+## <a name="3"></a>
+## Coverage tables
+If provided a subset column name, coverage will be calculate for each subset.
+```{r}
+coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "agegroup")  %>%
+    kableExtra::kable()
+```
+
+```{r}
+coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "sourcename")  %>%
+    kableExtra::kable()
+
+# t <- coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "sourcename")
+```
