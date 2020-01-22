@@ -16,8 +16,9 @@ coverage <- function(data, parameter, lower, upper, subset = NULL) {
     coverage <- 1 - number_out/nrow(data)
   } else {
     sets <- unique(data[[subset]])
-    coverage <- matrix(NA, nrow = length(sets), dimnames = list(sets, "coverage")) 
     symsubset <- rlang::sym(subset)
+    colname <- rlang::quo_name(subset)
+    coverage <- tibble::tibble(!!rlang::quo_name(colname) := sets, coverage = NA)
     for(i in 1:length(sets)) {
       set <- sets[i]
       tempdata <- data %>% dplyr::filter(!!symsubset == set)
@@ -25,8 +26,9 @@ coverage <- function(data, parameter, lower, upper, subset = NULL) {
       number_out <- out_of_coverage %>%
         as.numeric() %>%
         sum()
-      coverage[i,] <- 1 - number_out/nrow(data)
+      coverage[i,"coverage"] <- 1 - number_out/nrow(data)
     }
   }
   return(coverage)
 }
+

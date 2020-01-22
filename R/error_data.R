@@ -26,7 +26,6 @@ error_data <- function(data, parameter, estimate, totalerror_sd, subset)
     rownames(edata) <- c("error", "standard error", "adjusted error")
   } else {
     sets <- unique(data[[subset]])
-    edata <- list() 
     symsubset <- rlang::sym(subset)
     for(i in 1:length(sets)) {
       set <- sets[i]
