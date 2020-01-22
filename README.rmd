@@ -1,6 +1,9 @@
 ---
 title: "cetable"
-output: github_document
+output:
+   html_document:
+      self_contained: false
+      keep_md: true
 ---
 
 ```{r setup, include=FALSE}
@@ -25,8 +28,11 @@ cetable is a package for calculating errors and coverage. Output is formated to 
 error_data(data = exampledata, 
            parameter = "pcst", 
            estimate = "50%", 
-           totalerror_sd = "totalerror_sd")  %>%
-    kableExtra::kable()
+           totalerror_sd = "totalerror_sd",
+           subset = "agegroup")  %>%
+  kableExtra::kable() %>%
+  kableExtra::column_spec(1:2, bold = T) %>%
+  kableExtra::collapse_rows(columns = 1:2, valign = "top")
 ```
 
 ## <a name="3"></a>
@@ -38,7 +44,8 @@ coverage(data = exampledata,
          lower = "2.5%", 
          upper = "97.5%", 
          subset = "agegroup")  %>%
-    kableExtra::kable()
+  kableExtra::kable() %>%
+  kableExtra::column_spec(1, bold = T)
 ```
 
 ```{r}

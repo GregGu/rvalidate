@@ -8,7 +8,7 @@
 #' @return
 #' @export
 #'
-error_data <- function(data, parameter, estimate, totalerror_sd, subset)
+error_data <- function(data, parameter, estimate, totalerror_sd, subset = NULL)
 {
   if (is.null(subset)) {
     resid <- data[[parameter]] - data[[estimate]]
@@ -16,17 +16,27 @@ error_data <- function(data, parameter, estimate, totalerror_sd, subset)
                   resid / sd(resid),
                   resid / (1 / data[[totalerror_sd]])),
                 ncol = 3)
-    
-    edata <- data.frame(
-      "mean" = e %>% apply(2, mean),
-      "absolute_mean" = e %>% apply(2, abs) %>% apply(2, mean),
-      "median" = e %>% apply(2, median),
-      "absolute_median" = e %>% apply(2, abs) %>% apply(2, median)
+    rownames<- c("error", "standard error", "adjusted error")
+    edata <- tibble::tibble(
+                            "." = rownames,
+                            mean = e %>% apply(2, mean),
+                            absolute_mean = e %>% apply(2, abs) %>% apply(2, mean),
+                            median = e %>% apply(2, median),
+                            absolute_median = e %>% apply(2, abs) %>% apply(2, median)
     )
-    rownames(edata) <- c("error", "standard error", "adjusted error")
   } else {
     sets <- unique(data[[subset]])
     symsubset <- rlang::sym(subset)
+    colname <- rlang::quo_name(subset)
+    rownames <- c("error", "standard error", "adjusted error")
+    edata <- tibble::tibble(!!rlang::quo_name(colname) := NA, 
+                            "." = rownames,#rep(rownames, length(sets)),
+                            mean = NA,
+                            absolute_mean = NA,
+                            median = NA,
+                            absolute_median = NA
+                            )
+    elist <- list()
     for(i in 1:length(sets)) {
       set <- sets[i]
       tempdata <- data %>% dplyr::filter(!!symsubset == set)
@@ -35,16 +45,16 @@ error_data <- function(data, parameter, estimate, totalerror_sd, subset)
                     resid / sd(resid),
                     resid / (1 / tempdata[[totalerror_sd]])),
                   ncol = 3)
-      
-      edatatemp <- data.frame(
-        "mean" = e %>% apply(2, mean),
-        "absolute_mean" = e %>% apply(2, abs) %>% apply(2, mean),
-        "median" = e %>% apply(2, median),
-        "absolute_median" = e %>% apply(2, abs) %>% apply(2, median)
+      edata <- tibble::tibble(!!rlang::quo_name(colname) := set, 
+                              "." = rownames,#rep(rownames, length(sets)),
+                              mean = e %>% apply(2, mean),
+                              absolute_mean = e %>% apply(2, abs) %>% apply(2, mean),
+                              median = e %>% apply(2, median),
+                              absolute_median = e %>% apply(2, abs) %>% apply(2, median)
       )
-      rownames(edatatemp) <- c("error", "standard error", "adjusted error")
-      edata[[i]] <- edatatemp
+      elist[[i]] <- edata
     }
+    edata <- do.call(rbind, elist)
   }
   return(edata)
 }

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>cetable</title>
+
+<script src="README_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="README_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="README_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="README_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="README_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="README_files/navigation-1.1/tabsets.js"></script>
+<link href="README_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="README_files/highlightjs-9.12.0/highlight.js"></script>
+<script src="README_files/kePrint-0.0.1/kePrint.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">cetable</h1>
+
+</div>
+
+
+<div id="table-of-contents" class="section level2">
+<h2>Table of Contents</h2>
+<ol style="list-style-type: decimal">
+<li><a href="#intro">Introduction</a></li>
+<li><a href="#2">Error tables</a></li>
+<li><a href="#3">Coverage tables</a></li>
+</ol>
+</div>
+<div id="section" class="section level2">
+<h2><a name="intro"></a></h2>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>cetable is a package for calculating errors and coverage. Output is formated to produce tables. Use cetable::exampledata as a guide to format your data before using cetable.</p>
+</div>
+<div id="section-1" class="section level2">
+<h2><a name="2"></a></h2>
+</div>
+<div id="error-tables" class="section level2">
+<h2>Error tables</h2>
+<pre class="r"><code>error_data(data = exampledata, 
+           parameter = &quot;pcst&quot;, 
+           estimate = &quot;50%&quot;, 
+           totalerror_sd = &quot;totalerror_sd&quot;,
+           subset = &quot;agegroup&quot;)  %&gt;%
+  kableExtra::kable() %&gt;%
+  kableExtra::column_spec(1:2, bold = T) %&gt;%
+  kableExtra::collapse_rows(columns = 1:2, valign = &quot;top&quot;)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+agegroup
+</th>
+<th style="text-align:left;">
+.
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+absolute_mean
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+absolute_median
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
+[15-19]
+</td>
+<td style="text-align:left;font-weight: bold;">
+error
+</td>
+<td style="text-align:right;">
+-0.0298172
+</td>
+<td style="text-align:right;">
+0.0386107
+</td>
+<td style="text-align:right;">
+-0.0202038
+</td>
+<td style="text-align:right;">
+0.0225240
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard error
+</td>
+<td style="text-align:right;">
+-0.5407674
+</td>
+<td style="text-align:right;">
+0.7002489
+</td>
+<td style="text-align:right;">
+-0.3664186
+</td>
+<td style="text-align:right;">
+0.4084981
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+adjusted error
+</td>
+<td style="text-align:right;">
+-34.1352784
+</td>
+<td style="text-align:right;">
+38.2119313
+</td>
+<td style="text-align:right;">
+-20.4769160
+</td>
+<td style="text-align:right;">
+21.7130519
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
+[20-24]
+</td>
+<td style="text-align:left;font-weight: bold;">
+error
+</td>
+<td style="text-align:right;">
+-0.0386909
+</td>
+<td style="text-align:right;">
+0.0398491
+</td>
+<td style="text-align:right;">
+-0.0196006
+</td>
+<td style="text-align:right;">
+0.0196006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard error
+</td>
+<td style="text-align:right;">
+-0.6912598
+</td>
+<td style="text-align:right;">
+0.7119534
+</td>
+<td style="text-align:right;">
+-0.3501893
+</td>
+<td style="text-align:right;">
+0.3501893
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+adjusted error
+</td>
+<td style="text-align:right;">
+-42.6198346
+</td>
+<td style="text-align:right;">
+44.1095916
+</td>
+<td style="text-align:right;">
+-23.8462122
+</td>
+<td style="text-align:right;">
+23.8462122
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
+[25-29]
+</td>
+<td style="text-align:left;font-weight: bold;">
+error
+</td>
+<td style="text-align:right;">
+-0.0723830
+</td>
+<td style="text-align:right;">
+0.0734995
+</td>
+<td style="text-align:right;">
+-0.0342033
+</td>
+<td style="text-align:right;">
+0.0342033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard error
+</td>
+<td style="text-align:right;">
+-0.8201928
+</td>
+<td style="text-align:right;">
+0.8328449
+</td>
+<td style="text-align:right;">
+-0.3875678
+</td>
+<td style="text-align:right;">
+0.3875678
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+adjusted error
+</td>
+<td style="text-align:right;">
+-85.9073069
+</td>
+<td style="text-align:right;">
+87.4541139
+</td>
+<td style="text-align:right;">
+-47.1949096
+</td>
+<td style="text-align:right;">
+47.1949096
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
+[30-34]
+</td>
+<td style="text-align:left;font-weight: bold;">
+error
+</td>
+<td style="text-align:right;">
+-0.1373201
+</td>
+<td style="text-align:right;">
+0.1375212
+</td>
+<td style="text-align:right;">
+-0.0851305
+</td>
+<td style="text-align:right;">
+0.0851305
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard error
+</td>
+<td style="text-align:right;">
+-1.0747056
+</td>
+<td style="text-align:right;">
+1.0762794
+</td>
+<td style="text-align:right;">
+-0.6662550
+</td>
+<td style="text-align:right;">
+0.6662550
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+adjusted error
+</td>
+<td style="text-align:right;">
+-169.3051984
+</td>
+<td style="text-align:right;">
+169.5529490
+</td>
+<td style="text-align:right;">
+-104.0555741
+</td>
+<td style="text-align:right;">
+104.0555741
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
+[35-39]
+</td>
+<td style="text-align:left;font-weight: bold;">
+error
+</td>
+<td style="text-align:right;">
+-0.2208698
+</td>
+<td style="text-align:right;">
+0.2208698
+</td>
+<td style="text-align:right;">
+-0.1574512
+</td>
+<td style="text-align:right;">
+0.1574512
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard error
+</td>
+<td style="text-align:right;">
+-1.3769020
+</td>
+<td style="text-align:right;">
+1.3769020
+</td>
+<td style="text-align:right;">
+-0.9815502
+</td>
+<td style="text-align:right;">
+0.9815502
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+adjusted error
+</td>
+<td style="text-align:right;">
+-286.0175012
+</td>
+<td style="text-align:right;">
+286.0175012
+</td>
+<td style="text-align:right;">
+-207.5880585
+</td>
+<td style="text-align:right;">
+207.5880585
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
+[40-44]
+</td>
+<td style="text-align:left;font-weight: bold;">
+error
+</td>
+<td style="text-align:right;">
+-0.3023197
+</td>
+<td style="text-align:right;">
+0.3023197
+</td>
+<td style="text-align:right;">
+-0.2608168
+</td>
+<td style="text-align:right;">
+0.2608168
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard error
+</td>
+<td style="text-align:right;">
+-1.7161152
+</td>
+<td style="text-align:right;">
+1.7161152
+</td>
+<td style="text-align:right;">
+-1.4805245
+</td>
+<td style="text-align:right;">
+1.4805245
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+adjusted error
+</td>
+<td style="text-align:right;">
+-411.4972270
+</td>
+<td style="text-align:right;">
+411.4972270
+</td>
+<td style="text-align:right;">
+-342.5641788
+</td>
+<td style="text-align:right;">
+342.5641788
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
+[45-49]
+</td>
+<td style="text-align:left;font-weight: bold;">
+error
+</td>
+<td style="text-align:right;">
+-0.3466214
+</td>
+<td style="text-align:right;">
+0.3466214
+</td>
+<td style="text-align:right;">
+-0.3243611
+</td>
+<td style="text-align:right;">
+0.3243611
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard error
+</td>
+<td style="text-align:right;">
+-1.8996195
+</td>
+<td style="text-align:right;">
+1.8996195
+</td>
+<td style="text-align:right;">
+-1.7776244
+</td>
+<td style="text-align:right;">
+1.7776244
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+adjusted error
+</td>
+<td style="text-align:right;">
+-472.2664619
+</td>
+<td style="text-align:right;">
+472.2664619
+</td>
+<td style="text-align:right;">
+-419.6292047
+</td>
+<td style="text-align:right;">
+419.6292047
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="section-2" class="section level2">
+<h2><a name="3"></a></h2>
+</div>
+<div id="coverage-tables" class="section level2">
+<h2>Coverage tables</h2>
+<p>If provided a subset column name, coverage will be calculate for each subset.</p>
+<pre class="r"><code>coverage(data = exampledata, 
+         parameter = &quot;pcst&quot;, 
+         lower = &quot;2.5%&quot;, 
+         upper = &quot;97.5%&quot;, 
+         subset = &quot;agegroup&quot;)  %&gt;%
+  kableExtra::kable() %&gt;%
+  kableExtra::column_spec(1, bold = T)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+agegroup
+</th>
+<th style="text-align:right;">
+coverage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+[15-19]
+</td>
+<td style="text-align:right;">
+0.9582909
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+[20-24]
+</td>
+<td style="text-align:right;">
+0.9654120
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+[25-29]
+</td>
+<td style="text-align:right;">
+0.9440488
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+[30-34]
+</td>
+<td style="text-align:right;">
+0.8911495
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+[35-39]
+</td>
+<td style="text-align:right;">
+0.8657172
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+[40-44]
+</td>
+<td style="text-align:right;">
+0.8585961
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+[45-49]
+</td>
+<td style="text-align:right;">
+0.8575788
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>coverage(data = exampledata, 
+         parameter = &quot;pcst&quot;, 
+         lower = &quot;2.5%&quot;, 
+         upper = &quot;97.5%&quot;, 
+         subset = &quot;sourcename&quot;)  %&gt;%
+    kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+sourcename
+</th>
+<th style="text-align:right;">
+coverage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+dhs
+</td>
+<td style="text-align:right;">
+0.4211597
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+mics
+</td>
+<td style="text-align:right;">
+0.9196338
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># t &lt;- coverage(exampledata, &quot;pcst&quot;, &quot;2.5%&quot;, &quot;97.5%&quot;, subset = &quot;sourcename&quot;)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
