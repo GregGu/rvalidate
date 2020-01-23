@@ -1,6 +1,6 @@
-temp <- c("1a", "1b", "2a", "2b", "2c")
-combinat::permn(temp)
-# gtools::permutations(temp)
+# temp <- c("1a", "1b", "2a", "2b", "2c")
+# combinat::permn(temp)
+# 
 
 
 #we have multiple bins of different size so total perm is
@@ -9,8 +9,7 @@ combinat::permn(temp)
 # check the length = total perm
 # function repeats till that statement returns true
 
-binl <- list(c(1,2), c(1,2), c(1,2,3))
-binl2 <- list(c(TRUE,TRUE), c(TRUE,TRUE), c(TRUE,TRUE,TRUE))
+
 
 
 # 1,1,1
@@ -42,28 +41,51 @@ binl2 <- list(c(TRUE,TRUE), c(TRUE,TRUE), c(TRUE,TRUE,TRUE))
 # lastgroupsize <-binl[[lengthbin]] %>% length()
 # cont <- rep(NA, length(binl))
 # 
-# prebins X lastgroupsize
+# binl <- list(c(1,2), c(1,2), c(1,2,3))
 # 
-# reslist <- list()
-# i <- 0
-# while(length(reslist) < totalnumber) {
-#   
-# for 
-# 
-# for (j in 1:lastgroupsize) {
-#   for (k in 1:(lengthbin - 1)) {
-#     cont[k] <- binl[[j]][binl2[[j]]] %>% min()
-#     # themin <- binl[[k]][binl2[[k]]] %>% min() %>% which()
+# permutation_number <- function(list) {
+#   binsizes <- c()
+#   for (i in 1:length(list)) {
+#     binsizes[i] <- length(list[[i]])
 #   }
-#   cont[lengthbin] <- j
-#   i <- i + 1
-#   reslist[[i]] <- cont
+#   return(prod(binsizes))
 # }
 # 
+# totalnumber <- permutation_number(binl)
 # 
+# rightmostbin <- length(binl)
+# currentbin
+# swap / on time swaps
+# 
+# swap <- function(vector, current) {
+#   if (current == max(vector)) {
+#     return(NULL)
+#   } else {
+#     return((vector > current) %>% which %>% min)
+#   }
 # }
-
-
+# 
+# swapcheck <- function(swapright, binl, i) {
+#   if(is.null(swapnum)) {
+#     swapright <- binl[[rightmostbin]] %>% min
+#     for (j in 1:(length(binl)-1)) {
+#       swap(binl[[rightmostbin-j]], temp[i-1,rightmostbin-j])
+#     }
+#     swapleft <- swap(binl[[rightmostbin-1]], temp[i-1,rightmostbin-j])
+#   }
+# }
+# resetbin
+# 
+# temp <- matrix(NA, nrow = totalnumber, ncol = length(binl))
+# firstperm <- lapply(binl, min) %>% unlist()
+# temp[1,] <- firstperm
+# for(i in 2:nrow(temp)) {
+#   swapright <- swap(binl[[rightmostbin]], temp[i-1,rightmostbin])
+#   if(is.null(swapnum)) {
+#     
+#   }
+#   temp[i,rightmostbin] <- swap(binl[[rightmostbin]], temp[i-1,rightmostbin])
+# }
 
 # or we can do random sampling probabolistic approach
 # -sample from each bin X times
@@ -71,59 +93,86 @@ binl2 <- list(c(TRUE,TRUE), c(TRUE,TRUE), c(TRUE,TRUE,TRUE))
 # - if unique = total number computed earlier stop
 # - else repeat whole process
 
-library(dplyr)
 
-  # we have some colum in our data with unique codes and 0s for non dupes
-  cexam <- c(4002001, 0, 4002001, 4502000, 4502000, 4502000, 0)
-  # convert to a number system where 0 is non dupe and anything greater is a dupe
-  cef <- cexam %>% as.factor() %>% as.numeric() - 1
-  # 1 will be the first index in the list and so on ...
-  binl <- list()
-  cef2 <- cef[cef > 0]
-  for (i in unique(cef2)) {
-    binl[[i]] <- 1:((cef == i) %>% sum())
+bin_markup <- function(data, groups) {
+  t <- c()
+  for (group in groups) {
+    t1 <- data %>% select(group) %>% unlist() %>% as.vector
+    t <- paste0(t, t1)
   }
-
-
-binl <- list(c(1,2), c(1,2), c(1,2,3))
-
-permutation_number <- function(list) {
-  binsizes <- c()
-  for (i in 1:length(list)) {
-    binsizes[i] <- length(list[[i]])
-  }
-  return(prod(binsizes))
+  
+  dup1 <- t %>% duplicated(fromLast = TRUE)
+  dup2 <- t %>% duplicated(fromLast = FALSE)
+  dups <- dup1 | dup2
+  t <- t %>% as.factor() %>% as.numeric()
+  t[!dups] <- NA
+  data <- data %>% 
+    dplyr::mutate(duplicates = t) %>% 
+    tibble::rowid_to_column("rownum") #add row numbers 
+  data <- data %>% 
+    dplyr::mutate(non_duplicate = as.numeric(is.na(duplicates)))
+  return(data)
 }
 
-totalnumber <- permutation_number(binl)
-permutations <- list()
-i <- 1
-while (length(permutations) < totalnumber) {
-  perm1 <- c()
-  for (j in 1:length(binl)) {
-    perm1 <- c(perm1, sample(binl[[j]],1))
+
+
+
+
+permutation_number <- function(data, duplicates_vec) {
+  bin_size <- rep(NA, length(duplicates_vec))
+  for(i in 1:length(duplicates_vec)) {
+    bin_size[i] <- data %>% 
+      dplyr::filter(duplicates == duplicates_vec[i]) %>%
+      nrow()
   }
-  permutations[[i]] <- perm1
-  permutations <- permutations %>% unique()
-  i <- i + 1
+  return(prod(bin_size))
 }
 
-# now that we have permuations how to sample from data?
-# the index in a single permutation corresponds to which bin
-# the number at the index corresponds to which dupe
-# all 0s are sampled
 
-# sinx is our abbreviation for sample index
-# sinxl is the list of these samples
-for(i in 1:length(bins)) { # each i here is going to be a set of samples
-  sinx
-  for(j in 1:length(bin[[i]])) {
-    dinx <- which(cef == i) # the positions of all dupes for this bin in the data
-    dinx2 <- bin[[i]][[j]] # which observation of this dupe we want to sample
-    dinx3 <- dinx[dinx2] # the index in the data of obs
-
+sample_picker <- function(data, duplicates_vec) {
+  sample_set <- rep(NA, length(duplicates_vec))
+  for(i in 1:length(duplicates_vec)) {
+    rows <- data %>% 
+      dplyr::filter(duplicates == duplicates_vec[i]) %>%
+      dplyr::select("rownum") %>%
+      unlist() %>%
+      as.vector()
+    sample_set[i] <- sample(rows, 1)
   }
+  return(sample_set)
+}
 
+
+permutation_set_finder <- function(data, groups) {
+  data <- data %>% bin_markup(groups)
+  non_duplicate_rownum <- data %>% 
+    dplyr::filter(non_duplicate == 1) %>% 
+    dplyr::select(rownum) %>% 
+    unlist() %>%
+    as.vector()
+  duplicates_vec <- data %>% 
+    filter(complete.cases(.)) %>% 
+    select("duplicates") %>% 
+    unique() %>% 
+    unlist() %>% 
+    as.vector()
+  perm_num <- permutation_number(data, duplicates_vec)
+  i <- 0
+  permutations <- list()
+  repeat {
+    i <- i + 1 
+    permutations[[i]] <- sample_picker(data, duplicates_vec)
+    if (permutations %>% lapply(is.null) %>% unlist %>% any) {
+      toremove <- permutations %>% lapply(is.null) %>% unlist %>% which
+      permutations[[toremove]] <- NULL
+    }
+    if (length(permutations) == perm_num) {
+      break
+    }
+  }
+  return(list(permutations = permutations, 
+              non_duplicate_rownum = non_duplicate_rownum)
+  )
 }
 
 

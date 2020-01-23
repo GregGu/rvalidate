@@ -7,7 +7,12 @@
 #'
 #' @return
 #' @export
-coverage <- function(data, parameter, lower, upper, subset = NULL) {
+coverage <- function(data, 
+                     parameter, 
+                     lower, 
+                     upper, 
+                     subset = NULL
+                     ) {
   if (is.null(subset)) {
     out_of_coverage <- data[[parameter]] < data[[lower]] | data[[parameter]] > data[[upper]]
     number_out <- out_of_coverage %>%

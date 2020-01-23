@@ -202,19 +202,25 @@ summary {
 </div>
 <div id="error-tables" class="section level2">
 <h2>Error tables</h2>
-<pre class="r"><code>error_data(data = exampledata, 
-           parameter = &quot;pcst&quot;, 
+<pre class="r"><code>error_data(data = simdata, 
+           parameter = &quot;truevalue&quot;, 
            estimate = &quot;50%&quot;, 
            totalerror_sd = &quot;totalerror_sd&quot;,
-           subset = &quot;agegroup&quot;)  %&gt;%
+           subset = &quot;source&quot;)  %&gt;%
   kableExtra::kable() %&gt;%
   kableExtra::column_spec(1:2, bold = T) %&gt;%
   kableExtra::collapse_rows(columns = 1:2, valign = &quot;top&quot;)</code></pre>
+<pre><code>## Warning in matrix(c(resid, resid/sd(resid), resid/(1/
+## tempdata[[totalerror_sd]])), : data length [106] is not a sub-multiple or
+## multiple of the number of rows [36]</code></pre>
+<pre><code>## Warning in matrix(c(resid, resid/sd(resid), resid/(1/
+## tempdata[[totalerror_sd]])), : data length [94] is not a sub-multiple or
+## multiple of the number of rows [32]</code></pre>
 <table>
 <thead>
 <tr>
 <th style="text-align:left;">
-agegroup
+source
 </th>
 <th style="text-align:left;">
 .
@@ -236,22 +242,22 @@ absolute_median
 <tbody>
 <tr>
 <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
-[15-19]
+MCS
 </td>
 <td style="text-align:left;font-weight: bold;">
 error
 </td>
 <td style="text-align:right;">
--0.0298172
+0.0292395
 </td>
 <td style="text-align:right;">
-0.0386107
+0.7313942
 </td>
 <td style="text-align:right;">
--0.0202038
+0.0534767
 </td>
 <td style="text-align:right;">
-0.0225240
+0.6807314
 </td>
 </tr>
 <tr>
@@ -259,16 +265,16 @@ error
 standard error
 </td>
 <td style="text-align:right;">
--0.5407674
+-0.0246233
 </td>
 <td style="text-align:right;">
-0.7002489
+0.7600482
 </td>
 <td style="text-align:right;">
--0.3664186
+0.1916678
 </td>
 <td style="text-align:right;">
-0.4084981
+0.6608762
 </td>
 </tr>
 <tr>
@@ -276,36 +282,36 @@ standard error
 adjusted error
 </td>
 <td style="text-align:right;">
--34.1352784
+-0.0513414
 </td>
 <td style="text-align:right;">
-38.2119313
+0.8340206
 </td>
 <td style="text-align:right;">
--20.4769160
+0.0558395
 </td>
 <td style="text-align:right;">
-21.7130519
+0.6900759
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
-[20-24]
+DHS
 </td>
 <td style="text-align:left;font-weight: bold;">
 error
 </td>
 <td style="text-align:right;">
--0.0386909
+-0.1756114
 </td>
 <td style="text-align:right;">
-0.0398491
+0.7518174
 </td>
 <td style="text-align:right;">
--0.0196006
+-0.3064459
 </td>
 <td style="text-align:right;">
-0.0196006
+0.6560292
 </td>
 </tr>
 <tr>
@@ -313,70 +319,16 @@ error
 standard error
 </td>
 <td style="text-align:right;">
--0.6912598
+-0.1736374
 </td>
 <td style="text-align:right;">
-0.7119534
+0.7971844
 </td>
 <td style="text-align:right;">
--0.3501893
+0.0317236
 </td>
 <td style="text-align:right;">
-0.3501893
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-adjusted error
-</td>
-<td style="text-align:right;">
--42.6198346
-</td>
-<td style="text-align:right;">
-44.1095916
-</td>
-<td style="text-align:right;">
--23.8462122
-</td>
-<td style="text-align:right;">
-23.8462122
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
-[25-29]
-</td>
-<td style="text-align:left;font-weight: bold;">
-error
-</td>
-<td style="text-align:right;">
--0.0723830
-</td>
-<td style="text-align:right;">
-0.0734995
-</td>
-<td style="text-align:right;">
--0.0342033
-</td>
-<td style="text-align:right;">
-0.0342033
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-standard error
-</td>
-<td style="text-align:right;">
--0.8201928
-</td>
-<td style="text-align:right;">
-0.8328449
-</td>
-<td style="text-align:right;">
--0.3875678
-</td>
-<td style="text-align:right;">
-0.3875678
+0.7281736
 </td>
 </tr>
 <tr>
@@ -384,232 +336,16 @@ standard error
 adjusted error
 </td>
 <td style="text-align:right;">
--85.9073069
+0.0809473
 </td>
 <td style="text-align:right;">
-87.4541139
+0.7063890
 </td>
 <td style="text-align:right;">
--47.1949096
+0.1564543
 </td>
 <td style="text-align:right;">
-47.1949096
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
-[30-34]
-</td>
-<td style="text-align:left;font-weight: bold;">
-error
-</td>
-<td style="text-align:right;">
--0.1373201
-</td>
-<td style="text-align:right;">
-0.1375212
-</td>
-<td style="text-align:right;">
--0.0851305
-</td>
-<td style="text-align:right;">
-0.0851305
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-standard error
-</td>
-<td style="text-align:right;">
--1.0747056
-</td>
-<td style="text-align:right;">
-1.0762794
-</td>
-<td style="text-align:right;">
--0.6662550
-</td>
-<td style="text-align:right;">
-0.6662550
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-adjusted error
-</td>
-<td style="text-align:right;">
--169.3051984
-</td>
-<td style="text-align:right;">
-169.5529490
-</td>
-<td style="text-align:right;">
--104.0555741
-</td>
-<td style="text-align:right;">
-104.0555741
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
-[35-39]
-</td>
-<td style="text-align:left;font-weight: bold;">
-error
-</td>
-<td style="text-align:right;">
--0.2208698
-</td>
-<td style="text-align:right;">
-0.2208698
-</td>
-<td style="text-align:right;">
--0.1574512
-</td>
-<td style="text-align:right;">
-0.1574512
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-standard error
-</td>
-<td style="text-align:right;">
--1.3769020
-</td>
-<td style="text-align:right;">
-1.3769020
-</td>
-<td style="text-align:right;">
--0.9815502
-</td>
-<td style="text-align:right;">
-0.9815502
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-adjusted error
-</td>
-<td style="text-align:right;">
--286.0175012
-</td>
-<td style="text-align:right;">
-286.0175012
-</td>
-<td style="text-align:right;">
--207.5880585
-</td>
-<td style="text-align:right;">
-207.5880585
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
-[40-44]
-</td>
-<td style="text-align:left;font-weight: bold;">
-error
-</td>
-<td style="text-align:right;">
--0.3023197
-</td>
-<td style="text-align:right;">
-0.3023197
-</td>
-<td style="text-align:right;">
--0.2608168
-</td>
-<td style="text-align:right;">
-0.2608168
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-standard error
-</td>
-<td style="text-align:right;">
--1.7161152
-</td>
-<td style="text-align:right;">
-1.7161152
-</td>
-<td style="text-align:right;">
--1.4805245
-</td>
-<td style="text-align:right;">
-1.4805245
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-adjusted error
-</td>
-<td style="text-align:right;">
--411.4972270
-</td>
-<td style="text-align:right;">
-411.4972270
-</td>
-<td style="text-align:right;">
--342.5641788
-</td>
-<td style="text-align:right;">
-342.5641788
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3">
-[45-49]
-</td>
-<td style="text-align:left;font-weight: bold;">
-error
-</td>
-<td style="text-align:right;">
--0.3466214
-</td>
-<td style="text-align:right;">
-0.3466214
-</td>
-<td style="text-align:right;">
--0.3243611
-</td>
-<td style="text-align:right;">
-0.3243611
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-standard error
-</td>
-<td style="text-align:right;">
--1.8996195
-</td>
-<td style="text-align:right;">
-1.8996195
-</td>
-<td style="text-align:right;">
--1.7776244
-</td>
-<td style="text-align:right;">
-1.7776244
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-adjusted error
-</td>
-<td style="text-align:right;">
--472.2664619
-</td>
-<td style="text-align:right;">
-472.2664619
-</td>
-<td style="text-align:right;">
--419.6292047
-</td>
-<td style="text-align:right;">
-419.6292047
+0.7039856
 </td>
 </tr>
 </tbody>
@@ -621,18 +357,18 @@ adjusted error
 <div id="coverage-tables" class="section level2">
 <h2>Coverage tables</h2>
 <p>If provided a subset column name, coverage will be calculate for each subset.</p>
-<pre class="r"><code>coverage(data = exampledata, 
-         parameter = &quot;pcst&quot;, 
+<pre class="r"><code>coverage(data = simdata, 
+         parameter = &quot;truevalue&quot;, 
          lower = &quot;2.5%&quot;, 
          upper = &quot;97.5%&quot;, 
-         subset = &quot;agegroup&quot;)  %&gt;%
+         subset = &quot;source&quot;)  %&gt;%
   kableExtra::kable() %&gt;%
   kableExtra::column_spec(1, bold = T)</code></pre>
 <table>
 <thead>
 <tr>
 <th style="text-align:left;">
-agegroup
+source
 </th>
 <th style="text-align:right;">
 coverage
@@ -642,73 +378,45 @@ coverage
 <tbody>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-[15-19]
+MCS
 </td>
 <td style="text-align:right;">
-0.9582909
+0.97
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-[20-24]
+DHS
 </td>
 <td style="text-align:right;">
-0.9654120
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-[25-29]
-</td>
-<td style="text-align:right;">
-0.9440488
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-[30-34]
-</td>
-<td style="text-align:right;">
-0.8911495
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-[35-39]
-</td>
-<td style="text-align:right;">
-0.8657172
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-[40-44]
-</td>
-<td style="text-align:right;">
-0.8585961
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-[45-49]
-</td>
-<td style="text-align:right;">
-0.8575788
+1.00
 </td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>coverage(data = exampledata, 
-         parameter = &quot;pcst&quot;, 
+</div>
+<div id="section-3" class="section level2">
+<h2><a name="3"></a></h2>
+</div>
+<div id="coverage-tables-for-data-with-multiple-observations-within-a-grouping" class="section level2">
+<h2>Coverage tables for data with multiple observations within a grouping</h2>
+<pre class="r"><code>coverage_multiple(data = simdata, 
+         parameter = &quot;truevalue&quot;, 
          lower = &quot;2.5%&quot;, 
          upper = &quot;97.5%&quot;, 
-         subset = &quot;sourcename&quot;)  %&gt;%
-    kableExtra::kable()</code></pre>
+         subset = &quot;source&quot;,
+         group_to_check = c(&quot;country_code&quot;, &quot;year&quot;))  %&gt;%
+  kableExtra::kable() %&gt;%
+  kableExtra::column_spec(1:2, bold = T) %&gt;%
+  kableExtra::collapse_rows(columns = 1, valign = &quot;top&quot;)</code></pre>
 <table>
 <thead>
 <tr>
 <th style="text-align:left;">
-sourcename
+statistic
+</th>
+<th style="text-align:left;">
+Group.1
 </th>
 <th style="text-align:right;">
 coverage
@@ -717,24 +425,45 @@ coverage
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
-dhs
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2">
+median
+</td>
+<td style="text-align:left;font-weight: bold;">
+DHS
 </td>
 <td style="text-align:right;">
-0.4211597
+1.0000000
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-mics
+<td style="text-align:left;font-weight: bold;">
+MCS
 </td>
 <td style="text-align:right;">
-0.9196338
+0.9673913
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2">
+sd
+</td>
+<td style="text-align:left;font-weight: bold;">
+DHS
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MCS
+</td>
+<td style="text-align:right;">
+0.0000000
 </td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code># t &lt;- coverage(exampledata, &quot;pcst&quot;, &quot;2.5%&quot;, &quot;97.5%&quot;, subset = &quot;sourcename&quot;)</code></pre>
 </div>
 
 

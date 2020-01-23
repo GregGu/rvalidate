@@ -25,11 +25,11 @@ cetable is a package for calculating errors and coverage. Output is formated to 
 ## <a name="2"></a>
 ## Error tables
 ```{r}
-error_data(data = exampledata, 
-           parameter = "pcst", 
+error_data(data = simdata, 
+           parameter = "truevalue", 
            estimate = "50%", 
            totalerror_sd = "totalerror_sd",
-           subset = "agegroup")  %>%
+           subset = "source")  %>%
   kableExtra::kable() %>%
   kableExtra::column_spec(1:2, bold = T) %>%
   kableExtra::collapse_rows(columns = 1:2, valign = "top")
@@ -39,22 +39,29 @@ error_data(data = exampledata,
 ## Coverage tables
 If provided a subset column name, coverage will be calculate for each subset.
 ```{r}
-coverage(data = exampledata, 
-         parameter = "pcst", 
+coverage(data = simdata, 
+         parameter = "truevalue", 
          lower = "2.5%", 
          upper = "97.5%", 
-         subset = "agegroup")  %>%
+         subset = "source")  %>%
   kableExtra::kable() %>%
   kableExtra::column_spec(1, bold = T)
 ```
 
+
+
+## <a name="3"></a>
+## Coverage tables for data with multiple observations within a grouping
 ```{r}
-coverage(data = exampledata, 
-         parameter = "pcst", 
+coverage_multiple(data = simdata, 
+         parameter = "truevalue", 
          lower = "2.5%", 
          upper = "97.5%", 
-         subset = "sourcename")  %>%
-    kableExtra::kable()
+         subset = "source",
+         group_to_check = c("country_code", "year"))  %>%
+  kableExtra::kable() %>%
+  kableExtra::column_spec(1:2, bold = T) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "top")
 
-# t <- coverage(exampledata, "pcst", "2.5%", "97.5%", subset = "sourcename")
 ```
+
