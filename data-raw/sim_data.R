@@ -18,7 +18,7 @@ for (i in 1:n) {
   source_effect <- rnorm(1,0,1)*as.numeric(as.factor(simdata[["source"]][i]))*.05
   tr <- quantile(trd, probs = .5) + source_effect
   est <- quantile(trd, probs = c(.025, 0.1, .5, .9, .975)) + 
-    rnorm(1,0,1) + 
+    rnorm(1,0,2) + 
     source_effect
   simdata[["2.5%"]][i] <- est[1]
   simdata[["10%"]][i] <- est[2]
