@@ -6,7 +6,7 @@
 #'    \item{adjusted error = \eqn{\epsilon / (1 / total standard error )}}
 #' }
 #'
-#' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:simdata]{rvalidate:simdata}}
+#' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:rv_data]{rvalidate:rv_data}}
 #' @param parameter \emph{\sQuote{Character}} columm name of parameter in your data
 #' @param estimate  \emph{\sQuote{Character}} column name of estimate in your data
 #' @param total_standard_error \emph{\sQuote{Character}} column name of total standard error in your data
@@ -65,6 +65,6 @@ rv_error <- function(data, parameter, estimate, total_standard_error, subset = N
   edata <- edata %>%
     dplyr::mutate(error_numeric_code = as.numeric(as.factor(.))) %>%
     dplyr::arrange(error_numeric_code) %>%
-    dplyr::select(".", source, dplyr::everything(), -error_numeric_code)
+    dplyr::select(".", !!rlang::quo_name(colname), dplyr::everything(), -error_numeric_code)
   return(edata)
 }

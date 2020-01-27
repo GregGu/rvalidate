@@ -1,6 +1,6 @@
 #' rv_coverage
 #'
-#' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:simdata]{rvalidate:simdata}}
+#' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:rv_data]{rvalidate:rv_data}}
 #' @param parameter \emph{\sQuote{Character}} columm name of parameter in your data
 #' @param lower \emph{\sQuote{Character}} columm name of lower bound in your data
 #' @param upper \emph{\sQuote{Character}} columm name of upper bound in your data

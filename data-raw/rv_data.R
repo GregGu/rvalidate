@@ -1,4 +1,5 @@
-
+library(rvalidate)
+library(dplyr)
 n <- 100
 rv_data <- tibble::tibble(country_code = sample(c(400, 460, 452, 410, 489, 200, 152, 120), n, replace = TRUE), 
                year = sample(1960:2020, n, replace = TRUE), 
@@ -27,15 +28,20 @@ for (i in 1:n) {
   rv_data[["97.5%"]][i] <- est[5]
   rv_data[["observed_value"]][i] <- tr
 }
-# checking how many dupplicates occured in simulation before using data
-# temp <- rv_data %>% 
-#   bin_markup(group = c("country_code", "year"))
-# duplicates_vec <- temp %>% 
-#   filter(complete.cases(.)) %>% 
-#   select("duplicates") %>% 
-#   unique() %>% 
-#   unlist() %>% 
+
+
+
+# temp <- rv_data %>%
+#   rvalidate:::bin_markup(group = c("country_code", "year"))
+# duplicates_vec <- temp %>%
+#   filter(complete.cases(.)) %>%
+#   select("duplicates") %>%
+#   unique() %>%
+#   unlist() %>%
 #   as.vector()
-# permutation_number(temp, duplicates_vec)
+# rvalidate:::permutation_number(temp, duplicates_vec)
+
+
+
 usethis::use_data(rv_data, overwrite = TRUE)
 

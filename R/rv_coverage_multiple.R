@@ -54,16 +54,10 @@ rv_coverage_multiple <- function(data,
     cov_list[[j]] <- coverage
   }
   ld <- do.call(rbind, cov_list)
-  fby <- ld %>% dplyr::select(subset) %>% unlist() %>% list()
-  median <-
-    aggregate(dplyr::select(ld,-subset), by = fby, median) %>%
-    dplyr::mutate(statistic = "median")
-  sd <- aggregate(dplyr::select(ld,-subset), by = fby, sd) %>%
-    dplyr::mutate(statistic = "sd")
-  dt <- rbind(median, sd) %>%
-    dplyr::select(statistic, Group.1, coverage) %>%
-    dplyr::rename(!!rlang::quo_name(colname) := Group.1) #to force the columnname back, base r aggregate changes the name to Group.#
-  return(dt)
+  ld <- ld %>%
+    dplyr::group_by(!!symsubset) %>%
+    dplyr::summarise_all(.funs = c(meansd))
+  return(ld)
 }
 
 

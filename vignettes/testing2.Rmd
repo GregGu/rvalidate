@@ -10,6 +10,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# library(cetable)
 devtools::load_all()
 ```
 
@@ -18,13 +19,11 @@ devtools::load_all()
 1. [Introduction](#intro)
 2. [Error tables](#2)
 3. [Coverage tables](#3)
-4. [Statistics for multiple observations per group](#4)
   
 ## <a name="intro"></a>
 ## Introduction
 rvalidate computes validation statistics for models and draw up aesthetic tables and plots. Supports error, coverage, and Probability integral transforms. Input data should be formated as our simulated data. See `rvalidate::rv_data` below
 ```{r}
-library(rvalidate)
 rv_data %>% head() %>% kableExtra::kable()
 ```
 
@@ -32,7 +31,7 @@ rv_data %>% head() %>% kableExtra::kable()
 ## <a name="2"></a>
 ## Error tables
 ```{r, warning = FALSE}
-rv_error(data = rv_data, 
+rv_error(data = simdata, 
            parameter = "observed_value", 
            estimate = "50%", 
            total_standard_error = "totalerror_sd",
@@ -42,11 +41,12 @@ rv_error(data = rv_data,
   kableExtra::collapse_rows(columns = 1:2, valign = "top") 
 ```
 
+
 ## <a name="3"></a>
 ## Coverage tables
 If provided a subset column name, coverage will be calculate for each subset.
 ```{r}
-rv_coverage(data = rv_data, 
+rv_coverage(data = simdata, 
          parameter = "observed_value", 
          lower = "2.5%", 
          upper = "97.5%", 
@@ -55,26 +55,13 @@ rv_coverage(data = rv_data,
   kableExtra::column_spec(1, bold = T)
 ```
 
-## <a name="4"></a>
-## Statistics for data with multiple observations within a grouping
-For data containing multiple observations per group (e.g. country-year you) we compute statistics for all unique permutations of the data where there is only one observation from each group in each permutation. Note the run time will increase substantially as the number of multiple observations increase.
 
-### Error
-```{r, warning = FALSE}
-rv_error_multiple(data = rv_data, 
-           parameter = "observed_value", 
-           estimate = "50%", 
-           total_standard_error = "total_sd",
-           subset = "source",
-           group_to_check = c("country_code", "year"))  %>%
-  kableExtra::kable() %>%
-  kableExtra::column_spec(1:2, bold = T) %>%
-  kableExtra::collapse_rows(columns = 1:2, valign = "top") 
-```
 
-### Coverage
+## <a name="3"></a>
+## Coverage tables for data with multiple observations within a grouping
+If your data contains multiple observations of within the same grouping (e.g. country-year you) may wish to compute coverage for all unique permutations of the data where there is only one observation from each group in each permutation. Note the run time will increase substantially as the number of multiple observations increase.
 ```{r}
-rv_coverage_multiple(data = rv_data, 
+rv_coverage_multiple(data = simdata, 
          parameter = "observed_value", 
          lower = "2.5%", 
          upper = "97.5%", 

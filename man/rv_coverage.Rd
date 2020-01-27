@@ -7,7 +7,7 @@
 rv_coverage(data, parameter, lower, upper, subset = NULL)
 }
 \arguments{
-\item{data}{\emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:simdata]{rvalidate:simdata}}}
+\item{data}{\emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:rv_data]{rvalidate:rv_data}}}
 
 \item{parameter}{\emph{\sQuote{Character}} columm name of parameter in your data}
 

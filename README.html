@@ -9,156 +9,296 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 
+<meta name="date" content="2020-01-27" />
 
 <title>rvalidate</title>
 
-<script src="README_files/jquery-1.11.3/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="README_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
-<script src="README_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="README_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="README_files/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="README_files/navigation-1.1/tabsets.js"></script>
-<link href="README_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="README_files/highlightjs-9.12.0/highlight.js"></script>
-<script src="README_files/kePrint-0.0.1/kePrint.js"></script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
 </script>
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
 }
-h1.title {
-  font-size: 38px;
+#header {
+text-align: center;
 }
-h2 {
-  font-size: 30px;
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
 }
-h3 {
-  font-size: 24px;
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
 }
-h4 {
-  font-size: 18px;
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
 }
-h5 {
-  font-size: 16px;
+#TOC ul ul {
+margin-left: -2em;
 }
-h6 {
-  font-size: 12px;
+#TOC li {
+line-height: 16px;
 }
-.table th:not([align]) {
-  text-align: left;
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
 }
-</style>
-
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
 }
 code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
 }
 img {
-  max-width:100%;
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
 }
-.tabbed-pane {
-  padding-top: 12px;
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
 }
-.html-widget {
-  margin-bottom: 20px;
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
 }
-button.code-folding-btn:focus {
-  outline: none;
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
 }
-summary {
-  display: list-item;
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
 }
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
-
-
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<!-- code folding -->
 
 
 
@@ -168,18 +308,11 @@ summary {
 <body>
 
 
-<div class="container-fluid main-container">
-
-
-
-
-<div class="fluid-row" id="header">
-
 
 
 <h1 class="title toc-ignore">rvalidate</h1>
+<h4 class="date">2020-01-27</h4>
 
-</div>
 
 
 <div id="table-of-contents" class="section level2">
@@ -188,6 +321,7 @@ summary {
 <li><a href="#intro">Introduction</a></li>
 <li><a href="#2">Error tables</a></li>
 <li><a href="#3">Coverage tables</a></li>
+<li><a href="#4">Statistics for multiple observations per group</a></li>
 </ol>
 </div>
 <div id="section" class="section level2">
@@ -195,42 +329,253 @@ summary {
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>rvalidate computes validation statistics for models and draw up aesthetic tables and plots. Supports error, coverage, and Probability integral transforms. Input data should be formated as our simulated data. See <code>rvalidate::rv_data</code></p>
-<pre class="r"><code>rv_data %&gt;% head()</code></pre>
-<pre><code>##   country_code year source observed_value    total_sd      2.5%       10%
-## 1          200 1990    MCS       9.924525 0.006920953 11.175506 11.765141
-## 2          489 1989    DHS       9.970061 0.012325664 12.914963 13.595645
-## 3          410 1970    DHS      10.000659 0.012731858  5.060417  5.702596
-## 4          152 1993    DHS       9.979608 0.009354583  5.014258  5.684676
-## 5          410 1971    DHS      10.094780 0.011888622  7.482698  8.107003
-## 6          400 1982    DHS       9.997259 0.011385378  7.498365  8.179479
-##         50%       90%     97.5%
-## 1 13.092352 14.405077 15.066427
-## 2 14.850650 16.098937 16.898571
-## 3  7.016706  8.224662  8.927396
-## 4  6.897760  8.219465  8.885726
-## 5  9.346270 10.641755 11.277598
-## 6  9.401389 10.636436 11.384788</code></pre>
+<p>rvalidate computes validation statistics for models and draw up aesthetic tables and plots. Supports error, coverage, and Probability integral transforms. Input data should be formated as our simulated data. See <code>rvalidate::rv_data</code> below</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(rvalidate)</a>
+<a class="sourceLine" id="cb1-2" title="2">rv_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>kableExtra<span class="op">::</span><span class="kw">kable</span>()</a></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+country_code
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:right;">
+observed_value
+</th>
+<th style="text-align:right;">
+total_sd
+</th>
+<th style="text-align:right;">
+2.5%
+</th>
+<th style="text-align:right;">
+10%
+</th>
+<th style="text-align:right;">
+50%
+</th>
+<th style="text-align:right;">
+90%
+</th>
+<th style="text-align:right;">
+97.5%
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+452
+</td>
+<td style="text-align:right;">
+1968
+</td>
+<td style="text-align:left;">
+DHS
+</td>
+<td style="text-align:right;">
+9.978187
+</td>
+<td style="text-align:right;">
+0.0076347
+</td>
+<td style="text-align:right;">
+11.216954
+</td>
+<td style="text-align:right;">
+11.876886
+</td>
+<td style="text-align:right;">
+13.105444
+</td>
+<td style="text-align:right;">
+14.44993
+</td>
+<td style="text-align:right;">
+15.07335
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+460
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:left;">
+MCS
+</td>
+<td style="text-align:right;">
+10.004454
+</td>
+<td style="text-align:right;">
+0.0069228
+</td>
+<td style="text-align:right;">
+11.363874
+</td>
+<td style="text-align:right;">
+11.983092
+</td>
+<td style="text-align:right;">
+13.232552
+</td>
+<td style="text-align:right;">
+14.58292
+</td>
+<td style="text-align:right;">
+15.24793
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+400
+</td>
+<td style="text-align:right;">
+1989
+</td>
+<td style="text-align:left;">
+DHS
+</td>
+<td style="text-align:right;">
+9.950544
+</td>
+<td style="text-align:right;">
+0.0059009
+</td>
+<td style="text-align:right;">
+8.177640
+</td>
+<td style="text-align:right;">
+8.864203
+</td>
+<td style="text-align:right;">
+10.177068
+</td>
+<td style="text-align:right;">
+11.53340
+</td>
+<td style="text-align:right;">
+12.18274
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+452
+</td>
+<td style="text-align:right;">
+1987
+</td>
+<td style="text-align:left;">
+MCS
+</td>
+<td style="text-align:right;">
+9.986848
+</td>
+<td style="text-align:right;">
+0.0148777
+</td>
+<td style="text-align:right;">
+6.967247
+</td>
+<td style="text-align:right;">
+7.752201
+</td>
+<td style="text-align:right;">
+8.996949
+</td>
+<td style="text-align:right;">
+10.28428
+</td>
+<td style="text-align:right;">
+11.06708
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+410
+</td>
+<td style="text-align:right;">
+1975
+</td>
+<td style="text-align:left;">
+DHS
+</td>
+<td style="text-align:right;">
+10.102261
+</td>
+<td style="text-align:right;">
+0.0112292
+</td>
+<td style="text-align:right;">
+9.581199
+</td>
+<td style="text-align:right;">
+10.318207
+</td>
+<td style="text-align:right;">
+11.609877
+</td>
+<td style="text-align:right;">
+12.83488
+</td>
+<td style="text-align:right;">
+13.35034
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+400
+</td>
+<td style="text-align:right;">
+1961
+</td>
+<td style="text-align:left;">
+MCS
+</td>
+<td style="text-align:right;">
+9.904521
+</td>
+<td style="text-align:right;">
+0.0102033
+</td>
+<td style="text-align:right;">
+8.473300
+</td>
+<td style="text-align:right;">
+9.210177
+</td>
+<td style="text-align:right;">
+10.478661
+</td>
+<td style="text-align:right;">
+11.74164
+</td>
+<td style="text-align:right;">
+12.39988
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="section-1" class="section level2">
 <h2><a name="2"></a></h2>
 </div>
 <div id="error-tables" class="section level2">
 <h2>Error tables</h2>
-<pre class="r"><code>rv_error(data = simdata, 
-           parameter = &quot;observed_value&quot;, 
-           estimate = &quot;50%&quot;, 
-           total_standard_error = &quot;totalerror_sd&quot;,
-           subset = &quot;source&quot;)  %&gt;%
-  kableExtra::kable() %&gt;%
-  kableExtra::column_spec(1:2, bold = T) %&gt;%
-  kableExtra::collapse_rows(columns = 1:2, valign = &quot;top&quot;)</code></pre>
-<pre><code>## Warning in matrix(c(resid, resid/sd(resid), resid/(1/
-## tempdata[[total_standard_error]])), : data length [106] is not a sub-
-## multiple or multiple of the number of rows [36]</code></pre>
-<pre><code>## Warning in matrix(c(resid, resid/sd(resid), resid/(1/
-## tempdata[[total_standard_error]])), : data length [94] is not a sub-
-## multiple or multiple of the number of rows [32]</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">rv_error</span>(<span class="dt">data =</span> rv_data, </a>
+<a class="sourceLine" id="cb2-2" title="2">           <span class="dt">parameter =</span> <span class="st">&quot;observed_value&quot;</span>, </a>
+<a class="sourceLine" id="cb2-3" title="3">           <span class="dt">estimate =</span> <span class="st">&quot;50%&quot;</span>, </a>
+<a class="sourceLine" id="cb2-4" title="4">           <span class="dt">total_standard_error =</span> <span class="st">&quot;totalerror_sd&quot;</span>,</a>
+<a class="sourceLine" id="cb2-5" title="5">           <span class="dt">subset =</span> <span class="st">&quot;source&quot;</span>)  <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">column_spec</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">bold =</span> T) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">collapse_rows</span>(<span class="dt">columns =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">valign =</span> <span class="st">&quot;top&quot;</span>) </a></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -260,36 +605,36 @@ absolute_median
 adjusted error
 </td>
 <td style="text-align:left;font-weight: bold;">
-MCS
+DHS
 </td>
 <td style="text-align:right;">
--0.0432962
+-0.2837196
 </td>
 <td style="text-align:right;">
-0.7916478
+0.8720215
 </td>
 <td style="text-align:right;">
--0.1640615
+-0.1992226
 </td>
 <td style="text-align:right;">
-0.7430697
+0.8571875
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-DHS
+MCS
 </td>
 <td style="text-align:right;">
--0.2709536
+0.2500652
 </td>
 <td style="text-align:right;">
-0.8859954
+0.8797457
 </td>
 <td style="text-align:right;">
--0.3301602
+0.1215124
 </td>
 <td style="text-align:right;">
-0.7072134
+0.9800043
 </td>
 </tr>
 <tr>
@@ -297,36 +642,36 @@ DHS
 error
 </td>
 <td style="text-align:left;font-weight: bold;">
-MCS
+DHS
 </td>
 <td style="text-align:right;">
--0.0894602
+-0.5485532
 </td>
 <td style="text-align:right;">
-1.6289228
+1.8826515
 </td>
 <td style="text-align:right;">
--0.4259961
+-0.4233111
 </td>
 <td style="text-align:right;">
-1.4650967
+1.7560879
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-DHS
+MCS
 </td>
 <td style="text-align:right;">
-0.2997512
+-0.2701325
 </td>
 <td style="text-align:right;">
-1.5387435
+1.1126110
 </td>
 <td style="text-align:right;">
-0.2703691
+-0.3205814
 </td>
 <td style="text-align:right;">
-1.2473561
+0.8441630
 </td>
 </tr>
 <tr>
@@ -334,36 +679,36 @@ DHS
 standard error
 </td>
 <td style="text-align:left;font-weight: bold;">
-MCS
+DHS
 </td>
 <td style="text-align:right;">
-0.0263740
+-0.0577201
 </td>
 <td style="text-align:right;">
-1.0796893
+1.0927518
 </td>
 <td style="text-align:right;">
-0.2411630
+0.0044907
 </td>
 <td style="text-align:right;">
-0.8436846
+0.9971874
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-DHS
+MCS
 </td>
 <td style="text-align:right;">
--0.8204266
+0.5045546
 </td>
 <td style="text-align:right;">
-1.4364130
+1.4174942
 </td>
 <td style="text-align:right;">
--0.5648850
+0.2505769
 </td>
 <td style="text-align:right;">
-0.9888324
+1.0648596
 </td>
 </tr>
 </tbody>
@@ -375,13 +720,13 @@ DHS
 <div id="coverage-tables" class="section level2">
 <h2>Coverage tables</h2>
 <p>If provided a subset column name, coverage will be calculate for each subset.</p>
-<pre class="r"><code>rv_coverage(data = simdata, 
-         parameter = &quot;observed_value&quot;, 
-         lower = &quot;2.5%&quot;, 
-         upper = &quot;97.5%&quot;, 
-         subset = &quot;source&quot;)  %&gt;%
-  kableExtra::kable() %&gt;%
-  kableExtra::column_spec(1, bold = T)</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">rv_coverage</span>(<span class="dt">data =</span> rv_data, </a>
+<a class="sourceLine" id="cb3-2" title="2">         <span class="dt">parameter =</span> <span class="st">&quot;observed_value&quot;</span>, </a>
+<a class="sourceLine" id="cb3-3" title="3">         <span class="dt">lower =</span> <span class="st">&quot;2.5%&quot;</span>, </a>
+<a class="sourceLine" id="cb3-4" title="4">         <span class="dt">upper =</span> <span class="st">&quot;97.5%&quot;</span>, </a>
+<a class="sourceLine" id="cb3-5" title="5">         <span class="dt">subset =</span> <span class="st">&quot;source&quot;</span>)  <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">column_spec</span>(<span class="dv">1</span>, <span class="dt">bold =</span> T)</a></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -396,37 +741,40 @@ coverage
 <tbody>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-MCS
+DHS
 </td>
 <td style="text-align:right;">
-0.85
+0.79
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-DHS
+MCS
 </td>
 <td style="text-align:right;">
-0.82
+0.81
 </td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="section-3" class="section level2">
-<h2><a name="3"></a></h2>
+<h2><a name="4"></a></h2>
 </div>
-<div id="coverage-tables-for-data-with-multiple-observations-within-a-grouping" class="section level2">
-<h2>Coverage tables for data with multiple observations within a grouping</h2>
-<pre class="r"><code>rv_coverage_multiple(data = simdata, 
-         parameter = &quot;observed_value&quot;, 
-         lower = &quot;2.5%&quot;, 
-         upper = &quot;97.5%&quot;, 
-         subset = &quot;source&quot;,
-         group_to_check = c(&quot;country_code&quot;, &quot;year&quot;))  %&gt;%
-  kableExtra::kable() %&gt;%
-  kableExtra::column_spec(1:2, bold = T) %&gt;%
-  kableExtra::collapse_rows(columns = 1, valign = &quot;top&quot;)</code></pre>
+<div id="statistics-for-data-with-multiple-observations-within-a-grouping" class="section level2">
+<h2>Statistics for data with multiple observations within a grouping</h2>
+<p>For data containing multiple observations per group (e.g. country-year you) we compute statistics for all unique permutations of the data where there is only one observation from each group in each permutation. Note the run time will increase substantially as the number of multiple observations increase.</p>
+<div id="error" class="section level3">
+<h3>Error</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">rv_error_multiple</span>(<span class="dt">data =</span> rv_data, </a>
+<a class="sourceLine" id="cb4-2" title="2">           <span class="dt">parameter =</span> <span class="st">&quot;observed_value&quot;</span>, </a>
+<a class="sourceLine" id="cb4-3" title="3">           <span class="dt">estimate =</span> <span class="st">&quot;50%&quot;</span>, </a>
+<a class="sourceLine" id="cb4-4" title="4">           <span class="dt">total_standard_error =</span> <span class="st">&quot;total_sd&quot;</span>,</a>
+<a class="sourceLine" id="cb4-5" title="5">           <span class="dt">subset =</span> <span class="st">&quot;source&quot;</span>,</a>
+<a class="sourceLine" id="cb4-6" title="6">           <span class="dt">group_to_check =</span> <span class="kw">c</span>(<span class="st">&quot;country_code&quot;</span>, <span class="st">&quot;year&quot;</span>))  <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">column_spec</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">bold =</span> T) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">collapse_rows</span>(<span class="dt">columns =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">valign =</span> <span class="st">&quot;top&quot;</span>) </a></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -436,85 +784,180 @@ statistic
 <th style="text-align:left;">
 source
 </th>
-<th style="text-align:right;">
-coverage
+<th style="text-align:left;">
+mean
+</th>
+<th style="text-align:left;">
+absolute_mean
+</th>
+<th style="text-align:left;">
+median
+</th>
+<th style="text-align:left;">
+absolute_median
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2">
-median
+adjusted error
 </td>
 <td style="text-align:left;font-weight: bold;">
 DHS
 </td>
-<td style="text-align:right;">
-0.8260870
+<td style="text-align:left;">
+0 (3e-04)
+</td>
+<td style="text-align:left;">
+0.02 (3e-04)
+</td>
+<td style="text-align:left;">
+0 (9e-04)
+</td>
+<td style="text-align:left;">
+0.01 (5e-04)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
 MCS
 </td>
-<td style="text-align:right;">
-0.8478261
+<td style="text-align:left;">
+0 (8e-04)
+</td>
+<td style="text-align:left;">
+0.01 (6e-04)
+</td>
+<td style="text-align:left;">
+0 (7e-04)
+</td>
+<td style="text-align:left;">
+0.01 (7e-04)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2">
-sd
+error
 </td>
 <td style="text-align:left;font-weight: bold;">
 DHS
 </td>
-<td style="text-align:right;">
-0.0122107
+<td style="text-align:left;">
+-0.48 (0.0483)
+</td>
+<td style="text-align:left;">
+1.79 (0.0355)
+</td>
+<td style="text-align:left;">
+-0.38 (0.0711)
+</td>
+<td style="text-align:left;">
+1.78 (0.0251)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
 MCS
 </td>
-<td style="text-align:right;">
-0.0054348
+<td style="text-align:left;">
+0.2 (0.0654)
+</td>
+<td style="text-align:left;">
+1.5 (0.0425)
+</td>
+<td style="text-align:left;">
+-0.03 (0.0676)
+</td>
+<td style="text-align:left;">
+1.42 (0.1626)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2">
+standard error
+</td>
+<td style="text-align:left;font-weight: bold;">
+DHS
+</td>
+<td style="text-align:left;">
+-0.22 (0.0243)
+</td>
+<td style="text-align:left;">
+0.83 (0.0077)
+</td>
+<td style="text-align:left;">
+-0.18 (0.0328)
+</td>
+<td style="text-align:left;">
+0.82 (0.0069)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MCS
+</td>
+<td style="text-align:left;">
+0.11 (0.035)
+</td>
+<td style="text-align:left;">
+0.78 (0.0104)
+</td>
+<td style="text-align:left;">
+-0.01 (0.0349)
+</td>
+<td style="text-align:left;">
+0.74 (0.0758)
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-
-
-
-
+<div id="coverage" class="section level3">
+<h3>Coverage</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">rv_coverage_multiple</span>(<span class="dt">data =</span> rv_data, </a>
+<a class="sourceLine" id="cb5-2" title="2">         <span class="dt">parameter =</span> <span class="st">&quot;observed_value&quot;</span>, </a>
+<a class="sourceLine" id="cb5-3" title="3">         <span class="dt">lower =</span> <span class="st">&quot;2.5%&quot;</span>, </a>
+<a class="sourceLine" id="cb5-4" title="4">         <span class="dt">upper =</span> <span class="st">&quot;97.5%&quot;</span>, </a>
+<a class="sourceLine" id="cb5-5" title="5">         <span class="dt">subset =</span> <span class="st">&quot;source&quot;</span>,</a>
+<a class="sourceLine" id="cb5-6" title="6">         <span class="dt">group_to_check =</span> <span class="kw">c</span>(<span class="st">&quot;country_code&quot;</span>, <span class="st">&quot;year&quot;</span>))  <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">column_spec</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">bold =</span> T) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">collapse_rows</span>(<span class="dt">columns =</span> <span class="dv">1</span>, <span class="dt">valign =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:left;">
+coverage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+DHS
+</td>
+<td style="text-align:left;font-weight: bold;">
+0.78 (0.0074)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+MCS
+</td>
+<td style="text-align:left;font-weight: bold;">
+0.81 (0.0077)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
-<script>
 
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
-
-
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
 
 <!-- code folding -->
 
