@@ -1,4 +1,4 @@
-#' coverage multiple
+#' rv_coverage_multiple
 #'
 #' when there are multiple obervations from same group eg. two observations
 #' with the same country and year
@@ -11,7 +11,7 @@
 #'
 #' @return
 #' @export
-coverage_multiple <- function(data,
+rv_coverage_multiple <- function(data,
                               parameter,
                               lower,
                               upper,

@@ -1,12 +1,12 @@
-Package: cetable
-Title: coverage and error tables for JAGS models
+Package: rvalidate
+Title: rvalidate
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Gregory",
            family = "Guranich",
            role = c("aut", "cre"),
            email = "gguranic@umass.edu")
-Description: coverage and error tables for JAGS models
+Description: Compute validation statistics for models and draw up aesthetic tables and plots. Supports error, coverage, and Probability integral transforms.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

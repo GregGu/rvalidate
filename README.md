@@ -1,5 +1,5 @@
 ---
-title: "cetable"
+title: "rvalidate"
 output:
    html_document:
       self_contained: false
@@ -16,16 +16,38 @@ output:
   
 ## <a name="intro"></a>
 ## Introduction
-cetable is a package for calculating errors and coverage. Output is formated to produce tables. Use cetable::exampledata as a guide to format your data before using cetable.
+rvalidate computes validation statistics for models and draw up aesthetic tables and plots. Supports error, coverage, and Probability integral transforms. Input data should be formated as our simulated data. See `rvalidate::rv_data`
+
+```r
+rv_data %>% head()
+```
+
+```
+##   country_code year source observed_value    total_sd      2.5%       10%
+## 1          200 1990    MCS       9.924525 0.006920953 11.175506 11.765141
+## 2          489 1989    DHS       9.970061 0.012325664 12.914963 13.595645
+## 3          410 1970    DHS      10.000659 0.012731858  5.060417  5.702596
+## 4          152 1993    DHS       9.979608 0.009354583  5.014258  5.684676
+## 5          410 1971    DHS      10.094780 0.011888622  7.482698  8.107003
+## 6          400 1982    DHS       9.997259 0.011385378  7.498365  8.179479
+##         50%       90%     97.5%
+## 1 13.092352 14.405077 15.066427
+## 2 14.850650 16.098937 16.898571
+## 3  7.016706  8.224662  8.927396
+## 4  6.897760  8.219465  8.885726
+## 5  9.346270 10.641755 11.277598
+## 6  9.401389 10.636436 11.384788
+```
+
 
 ## <a name="2"></a>
 ## Error tables
 
 ```r
-error_data(data = simdata, 
-           parameter = "truevalue", 
+rv_error(data = simdata, 
+           parameter = "observed_value", 
            estimate = "50%", 
-           totalerror_sd = "totalerror_sd",
+           total_standard_error = "totalerror_sd",
            subset = "source")  %>%
   kableExtra::kable() %>%
   kableExtra::column_spec(1:2, bold = T) %>%
@@ -34,21 +56,21 @@ error_data(data = simdata,
 
 ```
 ## Warning in matrix(c(resid, resid/sd(resid), resid/(1/
-## tempdata[[totalerror_sd]])), : data length [106] is not a sub-multiple or
-## multiple of the number of rows [36]
+## tempdata[[total_standard_error]])), : data length [106] is not a sub-
+## multiple or multiple of the number of rows [36]
 ```
 
 ```
 ## Warning in matrix(c(resid, resid/sd(resid), resid/(1/
-## tempdata[[totalerror_sd]])), : data length [94] is not a sub-multiple or
-## multiple of the number of rows [32]
+## tempdata[[total_standard_error]])), : data length [94] is not a sub-
+## multiple or multiple of the number of rows [32]
 ```
 
 <table>
  <thead>
   <tr>
-   <th style="text-align:left;"> source </th>
    <th style="text-align:left;"> . </th>
+   <th style="text-align:left;"> source </th>
    <th style="text-align:right;"> mean </th>
    <th style="text-align:right;"> absolute_mean </th>
    <th style="text-align:right;"> median </th>
@@ -57,52 +79,52 @@ error_data(data = simdata,
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3"> MCS </td>
-   <td style="text-align:left;font-weight: bold;"> error </td>
-   <td style="text-align:right;"> 0.0292395 </td>
-   <td style="text-align:right;"> 0.7313942 </td>
-   <td style="text-align:right;"> 0.0534767 </td>
-   <td style="text-align:right;"> 0.6807314 </td>
+   <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2"> adjusted error </td>
+   <td style="text-align:left;font-weight: bold;"> MCS </td>
+   <td style="text-align:right;"> -0.0432962 </td>
+   <td style="text-align:right;"> 0.7916478 </td>
+   <td style="text-align:right;"> -0.1640615 </td>
+   <td style="text-align:right;"> 0.7430697 </td>
   </tr>
   <tr>
    
-   <td style="text-align:left;font-weight: bold;"> standard error </td>
-   <td style="text-align:right;"> -0.0246233 </td>
-   <td style="text-align:right;"> 0.7600482 </td>
-   <td style="text-align:right;"> 0.1916678 </td>
-   <td style="text-align:right;"> 0.6608762 </td>
+   <td style="text-align:left;font-weight: bold;"> DHS </td>
+   <td style="text-align:right;"> -0.2709536 </td>
+   <td style="text-align:right;"> 0.8859954 </td>
+   <td style="text-align:right;"> -0.3301602 </td>
+   <td style="text-align:right;"> 0.7072134 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2"> error </td>
+   <td style="text-align:left;font-weight: bold;"> MCS </td>
+   <td style="text-align:right;"> -0.0894602 </td>
+   <td style="text-align:right;"> 1.6289228 </td>
+   <td style="text-align:right;"> -0.4259961 </td>
+   <td style="text-align:right;"> 1.4650967 </td>
   </tr>
   <tr>
    
-   <td style="text-align:left;font-weight: bold;"> adjusted error </td>
-   <td style="text-align:right;"> -0.0513414 </td>
-   <td style="text-align:right;"> 0.8340206 </td>
-   <td style="text-align:right;"> 0.0558395 </td>
-   <td style="text-align:right;"> 0.6900759 </td>
+   <td style="text-align:left;font-weight: bold;"> DHS </td>
+   <td style="text-align:right;"> 0.2997512 </td>
+   <td style="text-align:right;"> 1.5387435 </td>
+   <td style="text-align:right;"> 0.2703691 </td>
+   <td style="text-align:right;"> 1.2473561 </td>
   </tr>
   <tr>
-   <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="3"> DHS </td>
-   <td style="text-align:left;font-weight: bold;"> error </td>
-   <td style="text-align:right;"> -0.1756114 </td>
-   <td style="text-align:right;"> 0.7518174 </td>
-   <td style="text-align:right;"> -0.3064459 </td>
-   <td style="text-align:right;"> 0.6560292 </td>
-  </tr>
-  <tr>
-   
-   <td style="text-align:left;font-weight: bold;"> standard error </td>
-   <td style="text-align:right;"> -0.1736374 </td>
-   <td style="text-align:right;"> 0.7971844 </td>
-   <td style="text-align:right;"> 0.0317236 </td>
-   <td style="text-align:right;"> 0.7281736 </td>
+   <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2"> standard error </td>
+   <td style="text-align:left;font-weight: bold;"> MCS </td>
+   <td style="text-align:right;"> 0.0263740 </td>
+   <td style="text-align:right;"> 1.0796893 </td>
+   <td style="text-align:right;"> 0.2411630 </td>
+   <td style="text-align:right;"> 0.8436846 </td>
   </tr>
   <tr>
    
-   <td style="text-align:left;font-weight: bold;"> adjusted error </td>
-   <td style="text-align:right;"> 0.0809473 </td>
-   <td style="text-align:right;"> 0.7063890 </td>
-   <td style="text-align:right;"> 0.1564543 </td>
-   <td style="text-align:right;"> 0.7039856 </td>
+   <td style="text-align:left;font-weight: bold;"> DHS </td>
+   <td style="text-align:right;"> -0.8204266 </td>
+   <td style="text-align:right;"> 1.4364130 </td>
+   <td style="text-align:right;"> -0.5648850 </td>
+   <td style="text-align:right;"> 0.9888324 </td>
   </tr>
 </tbody>
 </table>
@@ -112,8 +134,8 @@ error_data(data = simdata,
 If provided a subset column name, coverage will be calculate for each subset.
 
 ```r
-coverage(data = simdata, 
-         parameter = "truevalue", 
+rv_coverage(data = simdata, 
+         parameter = "observed_value", 
          lower = "2.5%", 
          upper = "97.5%", 
          subset = "source")  %>%
@@ -131,11 +153,11 @@ coverage(data = simdata,
 <tbody>
   <tr>
    <td style="text-align:left;font-weight: bold;"> MCS </td>
-   <td style="text-align:right;"> 0.97 </td>
+   <td style="text-align:right;"> 0.85 </td>
   </tr>
   <tr>
    <td style="text-align:left;font-weight: bold;"> DHS </td>
-   <td style="text-align:right;"> 1.00 </td>
+   <td style="text-align:right;"> 0.82 </td>
   </tr>
 </tbody>
 </table>
@@ -146,8 +168,8 @@ coverage(data = simdata,
 ## Coverage tables for data with multiple observations within a grouping
 
 ```r
-coverage_multiple(data = simdata, 
-         parameter = "truevalue", 
+rv_coverage_multiple(data = simdata, 
+         parameter = "observed_value", 
          lower = "2.5%", 
          upper = "97.5%", 
          subset = "source",
@@ -161,7 +183,7 @@ coverage_multiple(data = simdata,
  <thead>
   <tr>
    <th style="text-align:left;"> statistic </th>
-   <th style="text-align:left;"> Group.1 </th>
+   <th style="text-align:left;"> source </th>
    <th style="text-align:right;"> coverage </th>
   </tr>
  </thead>
@@ -169,22 +191,22 @@ coverage_multiple(data = simdata,
   <tr>
    <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2"> median </td>
    <td style="text-align:left;font-weight: bold;"> DHS </td>
-   <td style="text-align:right;"> 1.0000000 </td>
+   <td style="text-align:right;"> 0.8260870 </td>
   </tr>
   <tr>
    
    <td style="text-align:left;font-weight: bold;"> MCS </td>
-   <td style="text-align:right;"> 0.9673913 </td>
+   <td style="text-align:right;"> 0.8478261 </td>
   </tr>
   <tr>
    <td style="text-align:left;font-weight: bold;vertical-align: top !important;" rowspan="2"> sd </td>
    <td style="text-align:left;font-weight: bold;"> DHS </td>
-   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 0.0122107 </td>
   </tr>
   <tr>
    
    <td style="text-align:left;font-weight: bold;"> MCS </td>
-   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 0.0054348 </td>
   </tr>
 </tbody>
 </table>

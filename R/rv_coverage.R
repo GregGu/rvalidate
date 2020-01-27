@@ -1,13 +1,13 @@
-#' coverage
+#' rv_coverage
 #'
-#' @param data 
-#' @param parameter 
-#' @param lower 
-#' @param upper 
+#' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:simdata]{rvalidate:simdata}}
+#' @param parameter \emph{\sQuote{Character}} columm name of parameter in your data
+#' @param lower \emph{\sQuote{Character}} columm name of lower bound in your data
+#' @param upper \emph{\sQuote{Character}} columm name of upper bound in your data
 #'
-#' @return
+#' @return \emph{\sQuote{Tibble}} as a table with coverage
 #' @export
-coverage <- function(data, 
+rv_coverage <- function(data, 
                      parameter, 
                      lower, 
                      upper, 

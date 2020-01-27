@@ -1,20 +1,26 @@
-#' error_data
+#' rv_error
+#' 
+#' \describe{
+#'    \item{error (denoted \eqn{\epsilon}) = \eqn{y - \hat{y}}}
+#'    \item{standard error = \eqn{\epsilon / sd(\epsilon)}}
+#'    \item{adjusted error = \eqn{\epsilon / (1 / total standard error )}}
+#' }
 #'
-#' @param data 
-#' @param parameter 
-#' @param estimate 
-#' @param totalerror_sd 
+#' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:simdata]{rvalidate:simdata}}
+#' @param parameter \emph{\sQuote{Character}} columm name of parameter in your data
+#' @param estimate  \emph{\sQuote{Character}} column name of estimate in your data
+#' @param total_standard_error \emph{\sQuote{Character}} column name of total standard error in your data
 #'
-#' @return
+#' @return \emph{\sQuote{Tibble}} as a table with errors
 #' @export
 #'
-error_data <- function(data, parameter, estimate, totalerror_sd, subset = NULL)
+rv_error <- function(data, parameter, estimate, total_standard_error, subset = NULL)
 {
   if (is.null(subset)) {
     resid <- data[[parameter]] - data[[estimate]]
     e <- matrix(c(resid,
                   resid / sd(resid),
-                  resid / (1 / data[[totalerror_sd]])),
+                  resid / (1 / data[[total_standard_error]])),
                 ncol = 3)
     rownames<- c("error", "standard error", "adjusted error")
     edata <- tibble::tibble(
@@ -43,7 +49,7 @@ error_data <- function(data, parameter, estimate, totalerror_sd, subset = NULL)
       resid <- tempdata[[parameter]] - tempdata[[estimate]]
       e <- matrix(c(resid,
                     resid / sd(resid),
-                    resid / (1 / tempdata[[totalerror_sd]])),
+                    resid / (1 / tempdata[[total_standard_error]])),
                   ncol = 3)
       edata <- tibble::tibble(!!rlang::quo_name(colname) := set, 
                               "." = rownames,#rep(rownames, length(sets)),

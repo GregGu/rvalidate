@@ -1,5 +1,5 @@
 ---
-title: "cetable"
+title: "rvalidate"
 output:
    html_document:
       self_contained: false
@@ -20,15 +20,19 @@ devtools::load_all()
   
 ## <a name="intro"></a>
 ## Introduction
-cetable is a package for calculating errors and coverage. Output is formated to produce tables. Use cetable::exampledata as a guide to format your data before using cetable.
+rvalidate computes validation statistics for models and draw up aesthetic tables and plots. Supports error, coverage, and Probability integral transforms. Input data should be formated as our simulated data. See `rvalidate::rv_data`
+```{r}
+rv_data %>% head()
+```
+
 
 ## <a name="2"></a>
 ## Error tables
 ```{r}
-error_data(data = simdata, 
-           parameter = "truevalue", 
+rv_error(data = simdata, 
+           parameter = "observed_value", 
            estimate = "50%", 
-           totalerror_sd = "totalerror_sd",
+           total_standard_error = "totalerror_sd",
            subset = "source")  %>%
   kableExtra::kable() %>%
   kableExtra::column_spec(1:2, bold = T) %>%
@@ -39,8 +43,8 @@ error_data(data = simdata,
 ## Coverage tables
 If provided a subset column name, coverage will be calculate for each subset.
 ```{r}
-coverage(data = simdata, 
-         parameter = "truevalue", 
+rv_coverage(data = simdata, 
+         parameter = "observed_value", 
          lower = "2.5%", 
          upper = "97.5%", 
          subset = "source")  %>%
@@ -53,8 +57,8 @@ coverage(data = simdata,
 ## <a name="3"></a>
 ## Coverage tables for data with multiple observations within a grouping
 ```{r}
-coverage_multiple(data = simdata, 
-         parameter = "truevalue", 
+rv_coverage_multiple(data = simdata, 
+         parameter = "observed_value", 
          lower = "2.5%", 
          upper = "97.5%", 
          subset = "source",
