@@ -56,5 +56,9 @@ error_data <- function(data, parameter, estimate, totalerror_sd, subset = NULL)
     }
     edata <- do.call(rbind, elist)
   }
+  edata <- edata %>%
+    dplyr::mutate(error_numeric_code = as.numeric(as.factor(.))) %>%
+    dplyr::arrange(error_numeric_code) %>%
+    dplyr::select(".", source, dplyr::everything(), -error_numeric_code)
   return(edata)
 }
