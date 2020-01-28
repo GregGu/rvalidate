@@ -19,7 +19,7 @@ rv_error_multiple <-
            parameter,
            estimate,
            total_standard_error,
-           subset = NULL,
+           subset,
            group_to_check)
   {
   sets <- data %>%
@@ -30,65 +30,31 @@ rv_error_multiple <-
   for (j in 1:length(permutations)) {
     dsamp <- data[c(non_duplicate_rownum, permutations[[j]]),]
     
-    if (is.null(subset)) {
-      resid <- dsamp[[parameter]] - dsamp[[estimate]]
-      e <- matrix(c(resid,
-                    resid / sd(resid),
-                    resid / (1 / dsamp[[total_standard_error]])),
-                  ncol = 3)
-      rownames <- c("error", "standard error", "adjusted error")
-      edsamp <- tibble::tibble(
-        statistic = rownames,
-        mean = e %>% apply(2, mean),
-        absolute_mean = e %>% apply(2, abs) %>% apply(2, mean),
-        median = e %>% apply(2, median),
-        absolute_median = e %>% apply(2, abs) %>% apply(2, median)
-      )
-    } else {
-      sets <- unique(dsamp[[subset]])
-      symsubset <- rlang::sym(subset)
-      colname <- rlang::quo_name(subset)
-      rownames <- c("error", "standard error", "adjusted error")
-      edsamp <- tibble::tibble(
-        !!rlang::quo_name(colname) := NA,
-        statistic = rownames,
-        #rep(rownames, length(sets)),
-        mean = NA,
-        absolute_mean = NA,
-        median = NA,
-        absolute_median = NA
-      )
-      elist <- list()
-      for (i in 1:length(sets)) {
-        set <- sets[i]
-        tempdsamp <- dsamp %>% dplyr::filter(!!symsubset == set)
-        resid <- tempdsamp[[parameter]] - tempdsamp[[estimate]]
-        e <- matrix(c(resid,
-                      resid / sd(resid),
-                      resid / (1 / tempdsamp[[total_standard_error]])),
-                    ncol = 3)
-        edsamp <- tibble::tibble(
-          !!rlang::quo_name(colname) := set,
-          statistic = rownames,
-          #rep(rownames, length(sets)),
-          mean = e %>% apply(2, mean),
-          absolute_mean = e %>% apply(2, abs) %>% apply(2, mean),
-          median = e %>% apply(2, median),
-          absolute_median = e %>% apply(2, abs) %>% apply(2, median)
-        )
-        elist[[i]] <- edsamp
-      }
-      edsamp <- do.call(rbind, elist)
-    }
-    e_list[[j]] <- edsamp
+    parameter <- rlang::ensym(parameter)
+    estimate <- rlang::ensym(estimate)
+    total_standard_error <- rlang::ensym(total_standard_error)
+    subset <- rlang::syms(subset)
+    exclude <- purrr::map(rlang::syms(subset), function(x) {dplyr::expr(-!!x)})
+    edata <- dsamp %>%
+      dplyr::mutate(residual = !!parameter - !!estimate) %>%
+      dplyr::mutate(standardized_residual = residual/sd(residual)) %>%
+      dplyr::mutate(adjusted_residual = residual/(1-!!total_standard_error)) %>%
+      dplyr::select(!!!subset, residual, standardized_residual, adjusted_residual) %>%
+      tidyr::gather("residual", "value",  !!!exclude) %>%
+      dplyr::group_by(residual, !!!subset) %>%
+      dplyr::summarise_all(.funs=c("mean" = mean,
+                                   "mean_absolute" = function(x) { x %>% abs() %>% mean() },
+                                   "median"= median,
+                                   "median_absolute" = function(x) { x %>% abs() %>% median()}))
+    e_list[[j]] <- edata
   }
   ld <- do.call(rbind, e_list)
   ld <- ld %>%
-    dplyr::group_by(statistic, !!symsubset) %>%
-    dplyr::summarise_all(.funs = c(meansd)) %>%
-    dplyr::mutate(error_numeric_code = as.numeric(as.factor(statistic))) %>%
-    dplyr::arrange(error_numeric_code) %>%
-    dplyr::select(statistic, !!symsubset, dplyr::everything(),-error_numeric_code)
+    dplyr::group_by(residual, !!!subset) %>%
+    dplyr::summarise_all(.funs = c(meansd)) #%>%
+    # dplyr::mutate(error_numeric_code = as.numeric(as.factor(statistic))) %>%
+    # dplyr::arrange(error_numeric_code) %>%
+    # dplyr::select(statistic, !!subset, dplyr::everything(),-error_numeric_code)
     
     
   return(ld)

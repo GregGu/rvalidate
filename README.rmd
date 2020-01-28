@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(kableExtra)
 devtools::load_all()
-options(kableExtra.table.format = "html") 
+# options(kableExtra.table.format = "html") 
 ```
 
 
@@ -32,15 +32,25 @@ rv_data %>% head() %>% kableExtra::kable()
 
 ## <a name="2"></a>
 ## Error tables
+This function supports multiple subsets. In the first example we use the function to report error by source. Next we will compute errors by source and country.
 ```{r, warning = FALSE}
 rv_error(data = rv_data, 
            parameter = "observed_value", 
            estimate = "50%", 
-           total_standard_error = "totalerror_sd",
+           total_standard_error = "total_sd",
            subset = "source")  %>%
   kableExtra::kable() %>%
-  kableExtra::column_spec(1:2, bold = T) %>%
-  kableExtra::collapse_rows(columns = 1:2, valign = "top") 
+  kableExtra::column_spec(1:2, bold = T)
+```
+
+```{r, warning = FALSE}
+rv_error(data = rv_data, 
+           parameter = "observed_value", 
+           estimate = "50%", 
+           total_standard_error = "total_sd",
+           subset = c("source", "country_code")) %>%
+  kableExtra::kable() %>%
+  kableExtra::column_spec(1:3, bold = T)
 ```
 
 ## <a name="3"></a>
@@ -62,6 +72,7 @@ For data containing multiple observations per group (e.g. country-year you) we c
 
 ### Error
 ```{r, warning = FALSE}
+devtools::load_all()
 rv_error_multiple(data = rv_data, 
            parameter = "observed_value", 
            estimate = "50%", 
