@@ -1,5 +1,5 @@
-#' rv_error
-#' 
+#' residuals_multiple
+#'
 #' \describe{
 #'    \item{error (denoted \eqn{\epsilon}) = \eqn{y - \hat{y}}}
 #'    \item{standard error = \eqn{\epsilon / sd(\epsilon)}}
@@ -7,21 +7,26 @@
 #' }
 #'
 #' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:rv_data]{rvalidate:rv_data}}
-#' @param parameter \emph{\sQuote{Character}} columm name of parameter in your data
-#' @param estimate  \emph{\sQuote{Character}} column name of estimate in your data
+#' @param y \emph{\sQuote{Character}} columm name of y in your data
+#' @param yhat  \emph{\sQuote{Character}} column name of yhat in your data
 #' @param total_standard_error \emph{\sQuote{Character}} column name of total standard error in your data
 #'
 #' @return \emph{\sQuote{Tibble}} as a table with errors
 #' @export
 #'
-rv_error_multiple <-
+residuals_multiple <-
   function(data,
-           parameter,
-           estimate,
+           y,
+           yhat,
            total_standard_error,
            subset,
            group_to_check)
   {
+  y <- rlang::ensym(y)
+  yhat <- rlang::ensym(yhat)
+  total_standard_error <- rlang::ensym(total_standard_error)
+  subset <- rlang::syms(subset)
+  exclude <- purrr::map(rlang::syms(subset), function(x) {dplyr::expr(-!!x)})
   sets <- data %>%
     permutation_set_finder(group_to_check)
   permutations <- sets$permutations
@@ -29,14 +34,8 @@ rv_error_multiple <-
   e_list <- list()
   for (j in 1:length(permutations)) {
     dsamp <- data[c(non_duplicate_rownum, permutations[[j]]),]
-    
-    parameter <- rlang::ensym(parameter)
-    estimate <- rlang::ensym(estimate)
-    total_standard_error <- rlang::ensym(total_standard_error)
-    subset <- rlang::syms(subset)
-    exclude <- purrr::map(rlang::syms(subset), function(x) {dplyr::expr(-!!x)})
     edata <- dsamp %>%
-      dplyr::mutate(residual = !!parameter - !!estimate) %>%
+      dplyr::mutate(residual = !!y - !!yhat) %>%
       dplyr::mutate(standardized_residual = residual/sd(residual)) %>%
       dplyr::mutate(adjusted_residual = residual/(1-!!total_standard_error)) %>%
       dplyr::select(!!!subset, residual, standardized_residual, adjusted_residual) %>%
@@ -55,7 +54,7 @@ rv_error_multiple <-
     # dplyr::mutate(error_numeric_code = as.numeric(as.factor(statistic))) %>%
     # dplyr::arrange(error_numeric_code) %>%
     # dplyr::select(statistic, !!subset, dplyr::everything(),-error_numeric_code)
-    
-    
+
+
   return(ld)
 }

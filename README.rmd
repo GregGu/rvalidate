@@ -4,97 +4,124 @@ date: "`r Sys.Date()`"
 output:
   html_document:
     keep_md: TRUE
-    
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(kableExtra)
 devtools::load_all()
-# options(kableExtra.table.format = "html") 
+# options(kableExtra.table.format = "html")
 ```
 
 
 ## Table of Contents
 1. [Introduction](#intro)
-2. [Error tables](#2)
-3. [Coverage tables](#3)
-4. [Statistics for multiple observations per group](#4)
-  
+2. [Residual tables](#2)
+3. [Residual plots](#3)
+4. [Coverage tables](#4)
+5. [Statistics for multiple observations per group](#5)
+
 ## <a name="intro"></a>
 ## Introduction
-rvalidate computes validation statistics for models and draw up aesthetic tables and plots. Supports error, coverage, and Probability integral transforms. Input data should be formated as our simulated data. See `rvalidate::rv_data` below
+rvalidate computes and presents validation statistics based on model results. All you need to do is set up a tibble composed of model results and observed data. This step is exemplified below. The package does the rest of the work. Validation statistics include residuals `rvalidate::residuals`, coverage `rvalidate::coverage`, and Probability integral transforms `rvalidate::pit`. We do not stylize the output of our functions. This can be customized based on user prefference with a package such as `kableExtra`
+
+User input data should be formated as our simulated data `rvalidate::data`.
 ```{r}
 library(rvalidate)
 rv_data %>% head() %>% kableExtra::kable()
 ```
 
 
+
 ## <a name="2"></a>
-## Error tables
-This function supports multiple subsets. In the first example we use the function to report error by source. Next we will compute errors by source and country.
+## residual tables
+This function supports reporting of residual for subsets within the data. Subset arguement is NULL by default and will not report for subsets when unspecified.
 ```{r, warning = FALSE}
-rv_error(data = rv_data, 
-           parameter = "observed_value", 
-           estimate = "50%", 
+library(rvalidate)
+residuals(data = rv_data,
+           y = "y",
+           yhat = "50%",
+           total_standard_error = "total_sd") %>%
+  kableExtra::kable() %>%
+  kableExtra::column_spec(1, bold = T) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "top")
+```
+
+```{r, warning = FALSE}
+residuals(data = rv_data,
+           y = "y",
+           yhat = "50%",
            total_standard_error = "total_sd",
            subset = "source")  %>%
   kableExtra::kable() %>%
-  kableExtra::column_spec(1:2, bold = T)
+  kableExtra::column_spec(1:2, bold = T) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "top")
 ```
 
 ```{r, warning = FALSE}
-rv_error(data = rv_data, 
-           parameter = "observed_value", 
-           estimate = "50%", 
+residuals(data = rv_data,
+           y = "y",
+           yhat = "50%",
            total_standard_error = "total_sd",
-           subset = c("source", "country_code")) %>%
+           subset = c("source", "region_code")) %>%
   kableExtra::kable() %>%
-  kableExtra::column_spec(1:3, bold = T)
+  kableExtra::column_spec(1:3, bold = T) %>%
+  kableExtra::collapse_rows(columns = 1:2, valign = "top")
 ```
 
+
 ## <a name="3"></a>
+## Residual plots
+```{r}
+residuals_autoplot(
+  data = rv_data,
+  y = "y",
+  yhat = "50%"
+)
+```
+
+
+## <a name="4"></a>
 ## Coverage tables
 If provided a subset column name, coverage will be calculate for each subset.
 ```{r}
-rv_coverage(data = rv_data, 
-         parameter = "observed_value", 
-         lower = "2.5%", 
-         upper = "97.5%", 
+coverage(data = rv_data,
+         y = "y",
+         lower = "2.5%",
+         upper = "97.5%",
          subset = "source")  %>%
   kableExtra::kable() %>%
   kableExtra::column_spec(1, bold = T)
 ```
 
-## <a name="4"></a>
+## <a name="5"></a>
 ## Statistics for data with multiple observations within a grouping
 For data containing multiple observations per group (e.g. country-year you) we compute statistics for all unique permutations of the data where there is only one observation from each group in each permutation. Note the run time will increase substantially as the number of multiple observations increase.
 
-### Error
-```{r, warning = FALSE}
+### residual
+```{r}
 devtools::load_all()
-rv_error_multiple(data = rv_data, 
-           parameter = "observed_value", 
-           estimate = "50%", 
+residuals_multiple(data = rv_data,
+           y = "y",
+           yhat = "50%",
            total_standard_error = "total_sd",
            subset = "source",
            group_to_check = c("country_code", "year"))  %>%
   kableExtra::kable() %>%
   kableExtra::column_spec(1:2, bold = T) %>%
-  kableExtra::collapse_rows(columns = 1:2, valign = "top") 
+  kableExtra::collapse_rows(columns = 1:2, valign = "top")
 ```
 
 ### Coverage
 ```{r}
-rv_coverage_multiple(data = rv_data, 
-         parameter = "observed_value", 
-         lower = "2.5%", 
-         upper = "97.5%", 
+coverage_multiple(data = rv_data,
+         y = "y",
+         lower = "2.5%",
+         upper = "97.5%",
          subset = "source",
          group_to_check = c("country_code", "year"))  %>%
   kableExtra::kable() %>%
-  kableExtra::column_spec(1:2, bold = T) %>%
-  kableExtra::collapse_rows(columns = 1, valign = "top")
+  kableExtra::column_spec(1, bold = T)
 
 ```
-

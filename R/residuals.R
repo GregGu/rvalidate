@@ -1,5 +1,5 @@
-#' rv_error
-#' 
+#' residuals
+#'
 #' \describe{
 #'    \item{error (denoted \eqn{\epsilon}) = \eqn{y - \hat{y}}}
 #'    \item{standard error = \eqn{\epsilon / sd(\epsilon)}}
@@ -7,22 +7,22 @@
 #' }
 #'
 #' @param data \emph{\sQuote{Tibble}} formated as our example package data \code{\link[rvalidate:rv_data]{rvalidate:rv_data}}
-#' @param parameter \emph{\sQuote{Character}} columm name of parameter in your data
-#' @param estimate  \emph{\sQuote{Character}} column name of estimate in your data
+#' @param y \emph{\sQuote{Character}} columm name of y in your data
+#' @param yhat  \emph{\sQuote{Character}} column name of yhat in your data
 #' @param total_standard_error \emph{\sQuote{Character}} column name of total standard error in your data
 #'
 #' @return \emph{\sQuote{Tibble}} as a table with errors
 #' @export
 #'
-rv_error <- function(data, parameter, estimate, total_standard_error, subset)
+residuals <- function(data, y, yhat, total_standard_error, subset = NULL)
 {
-  parameter <- rlang::ensym(parameter)
-  estimate <- rlang::ensym(estimate)
+  y <- rlang::ensym(y)
+  yhat <- rlang::ensym(yhat)
   total_standard_error <- rlang::ensym(total_standard_error)
   subset <- rlang::syms(subset)
   exclude <- purrr::map(rlang::syms(subset), function(x) {dplyr::expr(-!!x)})
   edata <- data %>%
-    dplyr::mutate(residual = !!parameter - !!estimate) %>%
+    dplyr::mutate(residual = !!y - !!yhat) %>%
     dplyr::mutate(standardized_residual = residual/sd(residual)) %>%
     dplyr::mutate(adjusted_residual = residual/(1-!!total_standard_error)) %>%
     dplyr::select(!!!subset, residual, standardized_residual, adjusted_residual) %>%
@@ -57,11 +57,11 @@ rv_error <- function(data, parameter, estimate, total_standard_error, subset)
 
 
 # Archivied, version with less tidyverse
-# 
-# rv_error <- function(data, parameter, estimate, total_standard_error, subset = NULL)
+#
+# residual <- function(data, y, yhat, total_standard_error, subset = NULL)
 # {
 #   if (is.null(subset)) {
-#     resid <- data[[parameter]] - data[[estimate]]
+#     resid <- data[[y]] - data[[yhat]]
 #     e <- matrix(c(resid,
 #                   resid / sd(resid),
 #                   resid / (1 / data[[total_standard_error]])),
@@ -79,7 +79,7 @@ rv_error <- function(data, parameter, estimate, total_standard_error, subset)
 #     symsubset <- rlang::sym(subset)
 #     colname <- rlang::quo_name(subset)
 #     rownames <- c("error", "standard error", "adjusted error")
-#     edata <- tibble::tibble(!!rlang::quo_name(colname) := NA, 
+#     edata <- tibble::tibble(!!rlang::quo_name(colname) := NA,
 #                             "." = rownames,#rep(rownames, length(sets)),
 #                             mean = NA,
 #                             absolute_mean = NA,
@@ -90,12 +90,12 @@ rv_error <- function(data, parameter, estimate, total_standard_error, subset)
 #     for(i in 1:length(sets)) {
 #       set <- sets[i]
 #       tempdata <- data %>% dplyr::filter(!!symsubset == set)
-#       resid <- tempdata[[parameter]] - tempdata[[estimate]]
+#       resid <- tempdata[[y]] - tempdata[[yhat]]
 #       e <- matrix(c(resid,
 #                     resid / sd(resid),
 #                     resid / (1 / tempdata[[total_standard_error]])),
 #                   ncol = 3)
-#       edata <- tibble::tibble(!!rlang::quo_name(colname) := set, 
+#       edata <- tibble::tibble(!!rlang::quo_name(colname) := set,
 #                               "." = rownames,#rep(rownames, length(sets)),
 #                               mean = e %>% apply(2, mean),
 #                               absolute_mean = e %>% apply(2, abs) %>% apply(2, mean),
