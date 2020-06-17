@@ -1,0 +1,38 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# function inputs
+observed data
+samples in the form aray [samples X i] # if their dims are off from projection its their job to fix with [gett_i, getc_i] etc
+
+Lets make these fake inputs here
+```{r cars}
+mu <- 1:10 %>% as.list
+sd1 <- rnorm(10, 2, .5) %>% as.list
+simulated_samps <- purrr::pmap(list(n = 100, mean = mu, sd = sd1), rnorm) %>% unlist
+simulated_sampes_array <- array(simulated_samps, c(100, 10))
+
+data <- rv_data %>% 
+  dplyr::select(country_code, region_code, y)
+
+```
+
+```{r}
+
+  
+  
+rv_quantile_df <- function(samples_si) {
+  samples_df_si <- samples_si %>% as.data.frame
+  probs <- c(.025, 0.1, .5, .9, .975) %>% list
+  estimates_df_i5 <- list(samples_df_si, probs) %>% purrr::pmap_dfr(quantile)
+  return(estimates_df_i5)
+} 
+
+
+```
